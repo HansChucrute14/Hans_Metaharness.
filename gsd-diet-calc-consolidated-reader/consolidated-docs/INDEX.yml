@@ -1,0 +1,45 @@
+# Doc registry — consumed by src/lib/docs-parser.ts loadDocRegistry().
+# Every .md in consolidated-docs/ SHOULD be listed here.
+# Unlisted .md files are auto-discovered ONLY when DOCS_DEV_MODE=1 (dev aid, never prod).
+schemaVersion: "1.0.0"
+docs:
+  - file: PART-1-Diagnosis-Findings-and-As-Built-Reality.md
+    type: part
+    order: 1
+    title: "Diagnosis, Findings, and As-Built Reality"
+  - file: PART-2-The-Fix-Remediation-Plan-and-Roadmap.md
+    type: part
+    order: 2
+    title: "The Fix — Remediation Plan and Roadmap"
+  - file: PART-3-Synthesis-Unified-Verified-Project-Map.md
+    type: part
+    order: 3
+    title: "Synthesis — Unified Verified Project Map"
+  - file: PART-4-Meta-Critique-of-the-Documents.md
+    type: part
+    order: 4
+    title: "Meta-Critique of the Documents"
+  - file: APPENDIX-SAFETY-PROCESS.md
+    type: appendix
+    order: 10
+    title: "Appendix — Safety Process"
+  - file: APPENDIX-VERIFICATION-LOG.md
+    type: appendix
+    order: 11
+    title: "Appendix — Verification Log"
+  - file: APPENDIX-GLOSSARY.md
+    type: appendix
+    order: 12
+    title: "Appendix — Glossary"
+  - file: APPENDIX-PUBLIC-HEALTH-AND-REGULATORY.md
+    type: appendix
+    order: 13
+    title: "Appendix — Public Health and Regulatory"
+  - file: APPENDIX-ID-KEY.md
+    type: appendix
+    order: 14
+    title: "Appendix — ID Key"
+  - file: BUG-DEPENDENCY-MAP.md
+    type: map
+    order: 20
+    title: "Bug Dependency Map"

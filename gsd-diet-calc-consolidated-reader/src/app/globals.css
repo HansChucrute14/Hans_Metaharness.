@@ -1,0 +1,1072 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *, .opencode *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* =====================================================================
+   OpenCode theme — terminal-inspired, Claude-Code aesthetic.
+   Deep warm charcoal (not pure black — reduces contrast stress vs #000),
+   Anthropic terracotta accent, syntax-highlighting-inspired chart colors.
+   Dark-based: the .dark class is also applied (see ThemeClassSync) so all
+   existing `dark:` Tailwind variants keep working.
+   ===================================================================== */
+.opencode {
+  --background: oklch(0.17 0.004 70);
+  --foreground: oklch(0.91 0.008 80);
+  --card: oklch(0.20 0.005 70);
+  --card-foreground: oklch(0.91 0.008 80);
+  --popover: oklch(0.20 0.005 70);
+  --popover-foreground: oklch(0.91 0.008 80);
+  --primary: oklch(0.68 0.14 55);
+  --primary-foreground: oklch(0.17 0.004 70);
+  --secondary: oklch(0.24 0.005 70);
+  --secondary-foreground: oklch(0.91 0.008 80);
+  --muted: oklch(0.23 0.005 70);
+  --muted-foreground: oklch(0.68 0.012 75);
+  --accent: oklch(0.25 0.012 70);
+  --accent-foreground: oklch(0.91 0.008 80);
+  --destructive: oklch(0.65 0.20 25);
+  --border: oklch(0.28 0.006 70);
+  --input: oklch(0.25 0.005 70);
+  --ring: oklch(0.68 0.14 55);
+  --chart-1: oklch(0.68 0.14 55);
+  --chart-2: oklch(0.70 0.08 150);
+  --chart-3: oklch(0.78 0.13 75);
+  --chart-4: oklch(0.72 0.10 200);
+  --chart-5: oklch(0.68 0.16 15);
+  --sidebar: oklch(0.18 0.004 70);
+  --sidebar-foreground: oklch(0.91 0.008 80);
+  --sidebar-primary: oklch(0.68 0.14 55);
+  --sidebar-primary-foreground: oklch(0.17 0.004 70);
+  --sidebar-accent: oklch(0.25 0.012 70);
+  --sidebar-accent-foreground: oklch(0.91 0.008 80);
+  --sidebar-border: oklch(0.28 0.006 70);
+  --sidebar-ring: oklch(0.68 0.14 55);
+}
+
+/* =====================================================================
+   Scientific Ergonomic theme — warm sepia, research-tuned for extended reading.
+   - Warm low-luminance background reduces blue-light exposure and pupil strain
+     (Berman et al. studies on IESNA; e-ink-style palettes).
+   - Foreground is warm dark-brown (not pure black) at ~9:1 contrast (WCAG AAA).
+   - Low-saturation accents avoid saccade-triggering chroma noise.
+   - Body prose switches to a serif stack: serif typefaces measurably improve
+     long-form comprehension (Waller, 2007; Bringhurst).
+   Light-based: does NOT receive the .dark class.
+   ===================================================================== */
+.ergonomic {
+  --background: oklch(0.95 0.014 85);
+  --foreground: oklch(0.30 0.012 55);
+  --card: oklch(0.96 0.012 85);
+  --card-foreground: oklch(0.30 0.012 55);
+  --popover: oklch(0.96 0.012 85);
+  --popover-foreground: oklch(0.30 0.012 55);
+  --primary: oklch(0.45 0.06 50);
+  --primary-foreground: oklch(0.96 0.012 85);
+  --secondary: oklch(0.92 0.012 85);
+  --secondary-foreground: oklch(0.30 0.012 55);
+  --muted: oklch(0.92 0.012 85);
+  --muted-foreground: oklch(0.48 0.012 60);
+  --accent: oklch(0.90 0.014 80);
+  --accent-foreground: oklch(0.30 0.012 55);
+  --destructive: oklch(0.52 0.16 30);
+  --border: oklch(0.88 0.014 80);
+  --input: oklch(0.90 0.012 80);
+  --ring: oklch(0.45 0.06 50);
+  --chart-1: oklch(0.50 0.10 45);
+  --chart-2: oklch(0.55 0.08 150);
+  --chart-3: oklch(0.60 0.10 70);
+  --chart-4: oklch(0.50 0.09 220);
+  --chart-5: oklch(0.55 0.12 20);
+  --sidebar: oklch(0.94 0.014 85);
+  --sidebar-foreground: oklch(0.30 0.012 55);
+  --sidebar-primary: oklch(0.45 0.06 50);
+  --sidebar-primary-foreground: oklch(0.96 0.012 85);
+  --sidebar-accent: oklch(0.90 0.014 80);
+  --sidebar-accent-foreground: oklch(0.30 0.012 55);
+  --sidebar-border: oklch(0.88 0.014 80);
+  --sidebar-ring: oklch(0.45 0.06 50);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Text selection feedback (native, clear, theme-aware) ----
+     Note: ::-moz-selection removed — Lightning CSS (Tailwind v4) rewrites it to
+     ::moz-selection (invalid), and Firefox supports ::selection natively since v62. */
+  ::selection {
+    background-color: oklch(0.68 0.14 55 / 0.28);
+    color: inherit;
+    text-shadow: none;
+  }
+  .dark ::selection,
+  .opencode ::selection {
+    background-color: oklch(0.68 0.14 55 / 0.35);
+  }
+  .ergonomic ::selection {
+    background-color: oklch(0.45 0.10 50 / 0.25);
+  }
+  /* selection inside prose should feel like a real highlighter stroke */
+  .prose ::selection {
+    background-color: oklch(0.80 0.15 90 / 0.55);
+  }
+  .dark .prose ::selection,
+  .opencode .prose ::selection {
+    background-color: oklch(0.72 0.13 75 / 0.40);
+  }
+  .ergonomic .prose ::selection {
+    background-color: oklch(0.70 0.10 70 / 0.45);
+  }
+}
+
+/* ---- Theme-specific reading typography ---- */
+/* Ergonomic: serif body for proven long-form comprehension + relaxed measure */
+.ergonomic .prose {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052, serif;
+  font-size: 1.02em;
+  line-height: 1.78;
+  letter-spacing: 0.002em;
+}
+.ergonomic .prose :where(h1, h2, h3, h4) {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  letter-spacing: -0.01em;
+}
+.ergonomic .prose :where(p) {
+  line-height: 1.8;
+  hyphens: auto;
+}
+
+/* OpenCode: monospaced UI chrome hints, slightly condensed prose */
+.opencode .prose :where(code, pre, kbd, .font-mono) {
+  font-feature-settings: "calt" 1, "liga" 0;
+}
+.opencode {
+  font-family: var(--font-geist-sans), ui-monospace, "SF Mono", "Cascadia Code", monospace;
+}
+
+/* OpenCode subtle terminal texture (very faint, does not harm readability) */
+.opencode body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(oklch(0.91 0.008 80 / 0.018) 1px, transparent 1px);
+  background-size: 3px 3px;
+  z-index: 0;
+}
+
+/* highlight.js theme (github-light compatible, adapted for dark mode) */
+.hljs { color: #24292e; background: transparent; }
+.hljs-comment, .hljs-quote { color: #6a737d; font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-subst { color: #d73a49; }
+.hljs-string, .hljs-doctag { color: #032f62; }
+.hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable, .hljs-tag .hljs-attr { color: #005cc5; }
+.hljs-title, .hljs-section, .hljs-built_in, .hljs-name { color: #6f42c1; }
+.hljs-type, .hljs-class .hljs-title { color: #22863a; }
+.hljs-tag { color: #22863a; }
+.hljs-attr { color: #005cc5; }
+.hljs-meta { color: #6a737d; }
+.dark .hljs { color: #c9d1d9; }
+.dark .hljs-comment, .dark .hljs-quote { color: #8b949e; }
+.dark .hljs-keyword, .dark .hljs-selector-tag, .dark .hljs-subst { color: #ff7b72; }
+.dark .hljs-string, .dark .hljs-doctag { color: #a5d6ff; }
+.dark .hljs-number, .dark .hljs-literal, .dark .hljs-variable, .dark .hljs-tag .hljs-attr { color: #79c0ff; }
+.dark .hljs-title, .dark .hljs-section, .dark .hljs-built_in, .dark .hljs-name { color: #d2a8ff; }
+.dark .hljs-type { color: #7ee787; }
+.dark .hljs-tag { color: #7ee787; }
+.dark .hljs-attr { color: #79c0ff; }
+
+/* custom scrollbar */
+.scroll-area-thumb { background: hsl(var(--muted-foreground) / 0.3); border-radius: 9999px; }
+.scroll-area-thumb:hover { background: hsl(var(--muted-foreground) / 0.5); }
+
+/* ---------- animations & micro-interactions ---------- */
+
+/* fade-in for newly-mounted elements (dialogs, popovers) */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.18s ease-out;
+}
+
+/* slide-in for sidebar sheets */
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); opacity: 0.5; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* pop-in for popovers */
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-pop-in {
+  animation: pop-in 0.15s ease-out;
+}
+
+/* shimmer for loading skeletons */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted-foreground) / 0.15) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* pulse-highlight for newly-jumped-to sections */
+@keyframes pulse-highlight {
+  0% { background-color: hsl(var(--primary) / 0.22); box-shadow: 0 0 0 4px hsl(var(--primary) / 0.15); }
+  60% { background-color: hsl(var(--primary) / 0.08); box-shadow: 0 0 0 2px hsl(var(--primary) / 0.06); }
+  100% { background-color: transparent; box-shadow: 0 0 0 0 transparent; }
+}
+.animate-pulse-highlight {
+  animation: pulse-highlight 1.6s ease-out;
+}
+
+/* ── occurrence-jump: two-tier sentence + token highlight ────────────────
+ * When the user clicks "Jump to first occurrence", TWO highlights fire so
+ * the user immediately sees BOTH the precise token AND the full sentence it
+ * lives in (the disorientation complaint was "when it jumps it's confusing"
+ * — seeing only the token without its sentence context was the root cause):
+ *
+ * Tier 1 — .occurrence-jump-block (the "whole sentence")
+ *   Applied to the containing paragraph / list-item / table-cell / blockquote
+ *   that the ID token lives inside. A soft sustained amber wash + left accent
+ *   bar so the user can read the COMPLETE sentence the ID appears in, not
+ *   just a floating word.
+ *
+ * Tier 2 — .occurrence-jump-target (the exact token)
+ *   Applied to the literal IdLink button (e.g. the "B7" chip). A harder
+ *   amber marker (bg + ring + bold weight) so the user can find the precise
+ *   word within the highlighted sentence.
+ *
+ * Both animate over 5s with a gentle fade-in → hold → fade-out curve.
+ */
+
+/* Tier 1: the containing sentence/block — soft wash + left accent bar */
+@keyframes occurrence-jump-block-flash {
+  0%   { background-color: hsl(38 92% 50% / 0); }
+  8%   { background-color: hsl(38 92% 50% / 0.22); }
+  85%  { background-color: hsl(38 92% 50% / 0.22); }
+  100% { background-color: hsl(38 92% 50% / 0); }
+}
+.occurrence-jump-block {
+  animation: occurrence-jump-block-flash 5s ease-out forwards;
+  border-radius: 0.25rem;
+  /* Left accent bar via inset box-shadow — no layout shift (no padding/margin
+   * changes) so table cells and tight list items don't reflow. */
+  box-shadow: inset 3px 0 0 0 hsl(38 92% 50% / 0.7);
+}
+
+/* Tier 2: the exact ID token within the block — harder marker */
+@keyframes occurrence-jump-token-flash {
+  0% {
+    background-color: hsl(38 92% 50% / 0.55);
+    box-shadow: 0 0 0 2px hsl(38 92% 50% / 0.9);
+    font-weight: 800;
+  }
+  15% {
+    background-color: hsl(38 92% 50% / 0.42);
+    box-shadow: 0 0 0 2px hsl(38 92% 50% / 0.75);
+    font-weight: 800;
+  }
+  70% {
+    background-color: hsl(38 92% 50% / 0.22);
+    box-shadow: 0 0 0 1px hsl(38 92% 50% / 0.45);
+    font-weight: 700;
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 0 transparent;
+    font-weight: inherit;
+  }
+}
+.occurrence-jump-target {
+  animation: occurrence-jump-token-flash 5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  border-radius: 0.25rem;
+  position: relative;
+  z-index: 1;
+}
+/* While the sustained highlight is active, suppress the hover underline so the
+ * ring stays clean. */
+.occurrence-jump-target:hover {
+  text-decoration: none;
+}
+
+/* smooth scroll behavior */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animate-fade-in,
+  .animate-slide-in-left,
+  .animate-pop-in,
+  .animate-shimmer,
+  .animate-pulse-highlight,
+  .occurrence-jump-target,
+  .occurrence-jump-block {
+    animation: none !important;
+  }
+  /* For reduced-motion users, keep static visible markers instead of the
+   * animated flashes so the destination is still obvious. */
+  .occurrence-jump-block {
+    background-color: hsl(38 92% 50% / 0.20) !important;
+    box-shadow: inset 3px 0 0 0 hsl(38 92% 50% / 0.6) !important;
+  }
+  .occurrence-jump-target {
+    background-color: hsl(38 92% 50% / 0.30) !important;
+    box-shadow: 0 0 0 2px hsl(38 92% 50% / 0.7) !important;
+    font-weight: 700 !important;
+  }
+}
+
+/* hover lift effect for cards/buttons */
+.hover-lift {
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+.hover-lift:hover {
+  transform: translateY(-1px);
+}
+
+/* focus ring enhancement */
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 0.15s ease;
+}
+.focus-ring:focus-visible {
+  outline-color: hsl(var(--ring));
+}
+
+/* gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--chart-1)), hsl(var(--chart-5)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* prose enhancements */
+.prose :where(h1) {
+  font-weight: 700;
+}
+.prose :where(h2) {
+  font-size: 1.3em;
+  font-weight: 600;
+}
+.prose :where(h3) {
+  font-weight: 600;
+}
+.prose :where(h4) {
+  font-weight: 600;
+}
+.prose :where(p) {
+  line-height: 1.7;
+}
+.prose :where(h2, h3, h4):hover .heading-anchor {
+  opacity: 1;
+}
+.prose :where(table) {
+  overflow: hidden;
+  border-radius: 0.375rem;
+}
+.prose :where(table tr) {
+  transition: background-color 0.15s ease, opacity 0.25s ease;
+}
+.prose :where(blockquote) {
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* severity-filtered table rows: smoothly fade + collapse height */
+.prose tr.severity-hidden {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  line-height: 0;
+  padding: 0;
+  pointer-events: none;
+}
+.prose tr.severity-hidden td,
+.prose tr.severity-hidden th {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  line-height: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
+/* nicer scrollbars in scroll areas */
+[data-radix-scroll-area-viewport] {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+}
+[data-radix-scroll-area-viewport]::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-track {
+  background: transparent;
+}
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.25);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.45);
+  background-clip: padding-box;
+}
+
+/* (theme-aware ::selection rules live in @layer base above) */
+
+
+/* ========== Print styles ========== */
+@media print {
+  /* Hide navigation chrome */
+  aside, nav, header, .sticky-footer,
+  [data-sidebar], [data-backlinks], [data-toolbar],
+  .reading-progress-bar, .floating-graph-btn {
+    display: none !important;
+  }
+  /* Expand main content to full width */
+  main {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  /* Remove background colors */
+  body, .prose {
+    background: white !important;
+    color: black !important;
+  }
+  /* Ensure tables print properly */
+  .prose table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+  .prose td, .prose th {
+    border: 1px solid #ccc !important;
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+  }
+  /* Severity row colors — convert to subtle backgrounds */
+  .prose tr.severity-p0 td { background: #fee2e2 !important; }
+  .prose tr.severity-p1 td { background: #ffedd5 !important; }
+  .prose tr.severity-p2 td { background: #fef3c7 !important; }
+  .prose tr.severity-p3 td { background: #f3f4f6 !important; }
+  /* Page break rules */
+  .prose h1, .prose h2 { page-break-after: avoid; }
+  .prose table { page-break-inside: avoid; }
+  /* Show URLs for cross-reference links */
+  .prose a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 9px;
+    color: #666;
+  }
+  /* Remove link styling */
+  .prose a {
+    text-decoration: underline !important;
+    color: black !important;
+  }
+}
+
+/* ========== Improved typography ========== */
+.prose h1 { font-size: 1.8em; font-weight: 800; line-height: 1.2; letter-spacing: -0.02em; }
+.prose h2 { font-size: 1.4em; font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; }
+.prose h3 { font-size: 1.2em; font-weight: 600; line-height: 1.3; }
+.prose h4 { font-size: 1.05em; font-weight: 600; line-height: 1.4; }
+.prose p  { line-height: 1.75; }
+.prose li { line-height: 1.7; }
+
+/* ========== Smooth page transitions ========== */
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-page-enter {
+  animation: page-enter 0.3s ease-out forwards;
+}
+
+/* ========== Document comparison view ========== */
+.comparison-pane {
+  border-right: 2px solid var(--border);
+  position: relative;
+}
+.comparison-pane::after {
+  content: "OR";
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--muted-foreground);
+  letter-spacing: 0.5px;
+  z-index: 10;
+}
+
+/* ========== Annotation highlight styles ========== */
+.annotation-highlight {
+  border-radius: 2px;
+  padding: 0 2px;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+.annotation-highlight:hover {
+  filter: brightness(0.95);
+}
+
+/* ========== Selection toolbar animation ========== */
+@keyframes toolbar-appear {
+  from { opacity: 0; transform: translateY(8px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========== Command palette polish ========== */
+.cmd-palette-item {
+  transition: background-color 0.1s ease, transform 0.1s ease;
+}
+.cmd-palette-item:hover {
+  transform: translateX(2px);
+}
+@keyframes cmd-palette-enter {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========== Improved prose typography hierarchy ========== */
+.prose h1 {
+  font-size: 1.85em;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin-top: 0;
+  margin-bottom: 0.8em;
+  padding-bottom: 0.4em;
+  border-bottom: 2px solid hsl(var(--border));
+}
+.prose h2 {
+  font-size: 1.45em;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+  margin-top: 3em;
+  margin-bottom: 1em;
+  padding-bottom: 0.4em;
+  border-bottom: 1.5px solid hsl(var(--border) / 0.7);
+  scroll-margin-top: 5rem;
+}
+.prose h3 {
+  font-size: 1.22em;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin-top: 2em;
+  margin-bottom: 0.55em;
+  scroll-margin-top: 5rem;
+}
+.prose h4 {
+  font-size: 1.05em;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: 1.6em;
+  margin-bottom: 0.4em;
+  color: hsl(var(--foreground) / 0.92);
+  scroll-margin-top: 5rem;
+}
+.prose p  { line-height: 1.75; margin-top: 0.7em; margin-bottom: 0.7em; }
+.prose li { line-height: 1.7; margin-top: 0.25em; margin-bottom: 0.25em; }
+.prose ul, .prose ol { margin-top: 0.6em; margin-bottom: 0.6em; }
+.prose blockquote {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding: 0.75em 1em;
+  border-left: 3px solid hsl(var(--primary) / 0.4);
+  background: hsl(var(--muted) / 0.4);
+  border-radius: 0 4px 4px 0;
+}
+
+/* "Role:" definition block — give it visual presence */
+.prose p:has(strong:first-child) {
+  background: hsl(var(--muted) / 0.35);
+  border-left: 3px solid hsl(var(--primary) / 0.5);
+  padding: 0.6em 0.9em;
+  border-radius: 0 4px 4px 0;
+  margin-top: 1em;
+}
+
+/* Better secondary text contrast */
+.text-meta {
+  color: hsl(var(--foreground) / 0.65);
+}
+.dark .text-meta {
+  color: hsl(var(--foreground) / 0.7);
+}
+
+/* 8px spacing grid utility */
+.gap-grid > * + * { margin-top: 0; }
+.grid-8 > * + * { margin-top: 8px; }
+.grid-16 > * + * { margin-top: 16px; }
+.grid-24 > * + * { margin-top: 24px; }
+
+/* ========== Mobile improvements ========== */
+@media (max-width: 640px) {
+  /* Increase touch targets on mobile */
+  .prose a {
+    padding: 2px 0;
+  }
+  /* Larger section navigation buttons on mobile */
+  button[aria-label*="section" i] {
+    min-height: 36px;
+  }
+  /* Better readability on small screens */
+  .prose p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .prose li {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .prose table {
+    font-size: 12px;
+  }
+  .prose td, .prose th {
+    padding: 4px 6px;
+  }
+  /* Make code blocks horizontally scrollable on mobile */
+  .prose pre {
+    font-size: 11px;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ========== Severity badge pulse for P0 ========== */
+@keyframes p0-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+  50%      { box-shadow: 0 0 0 4px rgba(244, 63, 94, 0); }
+}
+.severity-p0-badge {
+  animation: p0-pulse 2.5s ease-in-out infinite;
+}
+
+/* ========== Critical path glow ========== */
+@keyframes critical-glow {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.3)); }
+  50%      { filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6)); }
+}
+.critical-path-glow {
+  animation: critical-glow 3s ease-in-out infinite;
+}
+
+/* ========== Smooth scroll for anchor jumps ========== */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* offset for sticky header */
+}
+
+/* ========== Improved focus rings ========== */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ========== Backdrop blur for floating elements ========== */
+.glass-panel {
+  background: var(--background);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* ========== Better scrollbar for dark mode ========== */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.dark ::-webkit-scrollbar-track {
+  background: hsl(240 10% 3.9%);
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(240 3.7% 15.9%);
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(240 3.7% 20%);
+}
+
+/* ========== Reading mode indicators ========== */
+.mode-focus main {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.mode-focus aside,
+.mode-focus [data-backlinks] {
+  display: none !important;
+}
+
+/* ========== Table polish — wrap wide tables in scroll container ========== */
+.prose table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+}
+.prose table::-webkit-scrollbar { height: 6px; }
+.prose table::-webkit-scrollbar-track { background: transparent; }
+.prose table::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.25);
+  border-radius: 9999px;
+}
+.prose thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.prose tbody tr:nth-child(even) {
+  background: hsl(var(--muted) / 0.25);
+}
+.prose tbody tr:hover {
+  background: hsl(var(--primary) / 0.06) !important;
+}
+/* Severity-row hover: keep the severity background tint visible */
+.prose tbody tr.severity-p0:hover { background: hsl(0 85% 95% / 0.85) !important; }
+.prose tbody tr.severity-p1:hover { background: hsl(30 90% 95% / 0.85) !important; }
+.prose tbody tr.severity-p2:hover { background: hsl(50 90% 95% / 0.85) !important; }
+.dark .prose tbody tr.severity-p0:hover { background: hsl(0 50% 18% / 0.6) !important; }
+.dark .prose tbody tr.severity-p1:hover { background: hsl(30 50% 18% / 0.6) !important; }
+.dark .prose tbody tr.severity-p2:hover { background: hsl(50 50% 18% / 0.6) !important; }
+
+/* ========== Dark mode contrast improvements ========== */
+.dark .prose { color: oklch(0.88 0.005 80); }
+.dark .prose :where(p, li) { color: oklch(0.86 0.005 80); }
+.dark .prose :where(th) { color: oklch(0.80 0.01 80); }
+.dark .prose :where(td) { color: oklch(0.88 0.005 80); }
+
+/* Light mode contrast improvements — boost muted-foreground for accessibility (WCAG AA minimum 4.5:1) */
+.prose .text-muted-foreground { color: color-mix(in oklab, var(--foreground) 65%, transparent); }
+/* Sidebar metadata text — ensure WCAG AA compliance */
+.text-muted-foreground { color: color-mix(in oklab, var(--foreground) 60%, transparent); }
+.dark .text-muted-foreground { color: color-mix(in oklab, var(--foreground) 55%, transparent); }
+
+/* ========== All-caps letter-spacing ========== */
+/* Improve legibility of uppercase text by adding letter-spacing */
+.uppercase { letter-spacing: 0.05em; }
+.font-mono.uppercase { letter-spacing: 0.08em; }
+
+/* ========== Selection toolbar: word count badge ========== */
+.selection-meta {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ========== Copy button on code blocks ========== */
+
+.code-block-wrapper { position: relative; }
+.code-block-copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--muted-foreground);
+  background: color-mix(in oklab, var(--background) 92%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 1;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 0 0 0.5px var(--border);
+  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.code-block-wrapper:hover .code-block-copy { opacity: 1; }
+.code-block-copy:hover {
+  background: var(--muted);
+  color: var(--foreground);
+  opacity: 1;
+}
+.code-block-copy:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+.code-block-copy.copied {
+  color: oklch(0.65 0.18 142);
+  background: color-mix(in oklab, oklch(0.92 0.18 142) 90%, transparent);
+  border-color: oklch(0.75 0.18 142);
+  opacity: 1;
+}
+.dark .code-block-copy.copied {
+  color: oklch(0.75 0.18 142);
+  background: color-mix(in oklab, oklch(0.25 0.12 142) 90%, transparent);
+  border-color: oklch(0.45 0.15 142);
+}
+
+/* ========== Callout card styles ========== */
+.callout-card {
+  border-radius: 0.5rem;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.callout-card:hover {
+  filter: brightness(0.98);
+}
+.dark .callout-card:hover {
+  filter: brightness(1.02);
+}
+
+/* Prose content inside callout cards */
+.prose-callout-content p:first-child {
+  margin-top: 0;
+}
+.prose-callout-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ========== Font size variable system ========== */
+:root {
+  --doc-font-size: 14px;
+}
+#md-container {
+  font-size: var(--doc-font-size, 14px);
+  transition: font-size 0.2s ease;
+}
+/* Scale prose elements proportionally when font size changes */
+#md-container .prose h1 { font-size: calc(var(--doc-font-size, 14px) * 1.85); }
+#md-container .prose h2 { font-size: calc(var(--doc-font-size, 14px) * 1.45); }
+#md-container .prose h3 { font-size: calc(var(--doc-font-size, 14px) * 1.22); }
+#md-container .prose h4 { font-size: calc(var(--doc-font-size, 14px) * 1.05); }
+#md-container .prose p { font-size: var(--doc-font-size, 14px); }
+#md-container .prose li { font-size: var(--doc-font-size, 14px); }
+
+/* ========== Better hover transitions for sidebar ========== */
+aside button,
+aside a,
+aside [role="button"] {
+  transition: background-color 0.15s ease, color 0.12s ease, transform 0.1s ease;
+}
+aside button:hover,
+aside a:hover,
+aside [role="button"]:hover {
+  transform: translateX(1px);
+}
+
+/* ========== Subtle content-area transition when switching documents ========== */
+@keyframes content-enter {
+  from { opacity: 0.7; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#md-container[data-doc-content] {
+  animation: content-enter 0.25s ease-out;
+}
+
+/* ========== Mini-TOC floating navigator styles ========== */
+.mini-toc-bar {
+  transition: height 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+.mini-toc-bar:hover {
+  transform: scaleX(1.4) !important;
+}
+.mini-toc-bar.active {
+  transform: scaleX(1.5);
+  z-index: 2;
+}
+
+/* ========== Severity mini bar chart in sidebar ========== */
+.severity-bar-chart-bar {
+  transition: height 0.3s ease, background-color 0.2s ease;
+  border-radius: 2px 2px 0 0;
+}
+.severity-bar-chart-bar:hover {
+  filter: brightness(1.1);
+}
+
+/* ========== Quick Facts card subtle hover ========== */
+.quick-fact-item {
+  transition: background-color 0.12s ease, padding-left 0.15s ease;
+}
+.quick-fact-item:hover {
+  padding-left: 4px;
+  background-color: hsl(var(--accent) / 0.5);
+}
+
+/* ========== Quick-jump nav flash highlight ========== */
+@keyframes quick-jump-flash-anim {
+  0%   { background-color: hsl(var(--primary) / 0.18); box-shadow: -2px 0 0 hsl(var(--primary)); }
+  60%  { background-color: hsl(var(--primary) / 0.10); box-shadow: -2px 0 0 hsl(var(--primary)); }
+  100% { background-color: transparent; box-shadow: -2px 0 0 transparent; }
+}
+.quick-jump-flash {
+  animation: quick-jump-flash-anim 1.2s ease-out;
+  border-radius: 4px;
+}
+
+/* ========== Thin scrollbar utility ========== */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 2px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
