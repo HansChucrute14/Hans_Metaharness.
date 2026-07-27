@@ -1,0 +1,236 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ── Project Model (Multi-project support) ──
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @default("")
+  repoOwner   String
+  repoName    String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  findings         Finding[]
+  auditConfigs     AuditConfig[]
+  githubConfigs    GitHubConfig[]
+  opencodeSettings OpencodeSetting[]
+  auditNotes       AuditNote[]
+  gitHubSyncLogs   GitHubSyncLog[]
+  opencodeActions  OpencodeAction[]
+}
+
+// ── Audit System Models ──
+
+model Finding {
+  id               String   @id @default(cuid())
+  task             String              // "1", "2", "X1", "D-E12" etc (NOT @unique anymore — scoped by project)
+  findingIds       String              // JSON array: ["A3","A2","B2"]
+  title            String
+  tier             String              // "tier0", "tier1", "tier2", "deferred", "additional"
+  severity         String              // "critical", "high", "medium", "low"
+  category         String
+  summary          String
+  claim            String              @default("")
+  evidence         String              @default("")
+  verificationStatus String            @default("confirmed-execution")
+  verificationNote String?
+  dependsOn        String              @default("None")
+  affectedFiles    String              // JSON array: ["solver.py", "constraints.json"]
+  unifiedModuleId    String?             // FK to UnifiedExecutionModule
+  githubIssueUrl     String?             // URL of the created GitHub issue
+  githubIssueNumber  Int?                // Issue number on GitHub
+  githubSyncedAt     DateTime?           // Last sync timestamp with GitHub
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  projectId         String
+  project           Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  proposals          Proposal[]
+  codeSnippets     CodeSnippet[]
+  bestAnalysis     BestProposalAnalysis?
+  auditNotes       AuditNote[]
+  module           UnifiedExecutionModule? @relation(fields: [unifiedModuleId], references: [id])
+
+  @@unique([projectId, task])
+}
+
+model Proposal {
+  id          String  @id @default(cuid())
+  findingId   String
+  index       Int     // 0, 1, 2 (which proposal in the finding)
+  title       String
+  description String
+  effort      String  // "low", "medium", "high"
+  risk        String  // "low", "medium", "high"
+  reversible  Boolean @default(true)
+
+  finding     Finding @relation(fields: [findingId], references: [id], onDelete: Cascade)
+}
+
+model CodeSnippet {
+  id        String  @id @default(cuid())
+  findingId String
+  file      String
+  lines     String
+  language  String  @default("python")
+  code      String
+
+  finding   Finding @relation(fields: [findingId], references: [id], onDelete: Cascade)
+}
+
+model BestProposalAnalysis {
+  id             String  @id @default(cuid())
+  findingId      String  @unique  // FK to Finding.id (cuid) instead of task — always unique regardless of project scope
+  bestSoloIndex  Int     // 0, 1, 2
+  bestSoloReason String
+  hybridNote     String?
+  unifiedModuleId String?
+
+  finding        Finding @relation(fields: [findingId], references: [id], onDelete: Cascade)
+}
+
+model UnifiedExecutionModule {
+  id            String  @id @default(cuid())  // "nutrient_report", "module_integrity", etc
+  title         String
+  subtitle      String
+  coreIdea      String
+  addresses     String  // JSON array of task strings
+  fixes         String  // JSON array of fix description strings
+  effort        String  // "low", "medium", "high"
+  risk          String  // "low", "medium", "high"
+  keyInsight    String
+  elegantSolution String
+
+  findings      Finding[]
+}
+
+model AuditNote {
+  id        String  @id @default(cuid())
+  findingId String              // FK to Finding.id (cuid) instead of task — always unique regardless of project scope
+  note      String
+  status    String  @default("not-started")  // "not-started", "in-progress", "fixed", "wont-fix"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  finding   Finding @relation(fields: [findingId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+}
+
+model AIConnector {
+  id           String    @id @default(cuid())
+  name         String    @unique   // "ollama", "lmstudio", "custom"
+  type         String               // "ollama", "openai-compatible", "custom"
+  endpointUrl  String               // "http://localhost:11434"
+  modelName    String?              // "llama3", "codellama", etc.
+  temperature  Float     @default(0.7)
+  maxTokens    Int       @default(4096)
+  isActive     Boolean   @default(false)
+  lastPingAt   DateTime?
+  status       String    @default("disconnected")  // "connected", "disconnected", "error"
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+// ── Opencode Harness ──
+model OpencodeSetting {
+  id            String   @id @default(cuid())
+  binaryPath    String   @default("opencode")  // Path to opencode binary
+  workspacePath String   @default("")          // Working directory for opencode
+  model         String   @default("claude-sonnet-4-20250514")  // Default model
+  endpointUrl   String   @default("http://localhost:4096")  // Opencode HTTP API endpoint
+  autoReview    Boolean  @default(false)       // Auto-review on file changes
+  syncToGithub  Boolean  @default(true)        // Auto-sync changes to GitHub
+  isActive      Boolean  @default(false)       // Whether opencode is active
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  projectId     String
+  project       Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  actions       OpencodeAction[]
+
+  @@unique([projectId])
+}
+
+model OpencodeAction {
+  id          String   @id @default(cuid())
+  action      String               // "analyze", "fix", "review", "test", "refactor"
+  task        String?              // Finding.task if related to a finding
+  prompt      String               // The prompt sent to opencode
+  contextJson String   @default("{}") // JSON context data
+  status      String   @default("queued") // "queued", "running", "completed", "failed"
+  sessionId   String?              // Opencode session ID for retrieving results
+  result      String?              // Output from opencode (if available)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  settings    OpencodeSetting @relation(fields: [settingsId], references: [id], onDelete: Cascade)
+  settingsId  String
+
+  projectId   String
+  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+// ── Adaptive Audit Configuration ──
+// Instead of hardcoding categories, severities, tiers, etc.,
+// store them in the DB so users can customize their audit framework.
+
+model AuditConfig {
+  id        String   @id @default(cuid())
+  key       String              // "severity_levels", "tier_labels", "categories", "statuses", etc. (NOT @unique anymore — scoped by project)
+  value     String              // JSON string containing the config data
+  isDefault Boolean  @default(true)  // Whether this is the default (non-user-modified) config
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, key])
+}
+
+// ── GitHub Configuration ──
+// Stores the GitHub token, repo owner/name, project number in the DB
+// so changes take effect immediately without server restart.
+model GitHubConfig {
+  id              String   @id @default(cuid())
+  key             String              // "github_token", "repo_owner", "repo_name", "project_number" (NOT @unique anymore — scoped by project)
+  value           String              // The actual value (token, owner name, etc.)
+  isEncrypted     Boolean  @default(false)  // Whether value is stored encrypted (future)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  projectId       String
+  project         Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, key])
+}
+
+// ── GitHub Sync Log ──
+model GitHubSyncLog {
+  id          String   @id @default(cuid())
+  direction   String               // "pull" (GitHub→app) or "push" (app→GitHub)
+  action      String               // "sync", "create-issue", "update-status", "add-comment"
+  task        String?              // Finding.task if related
+  issueNumber Int?                 // GitHub issue number
+  details     String   @default("") // Human-readable details
+  success     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  projectId   String
+  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
