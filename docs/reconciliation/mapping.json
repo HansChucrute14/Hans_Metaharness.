@@ -1,0 +1,782 @@
+{
+  "source_version": "post-AUDIT_DELTA (v10.4.0 + E24/E25)",
+  "raw_ids": 107,
+  "canonical_ids": 98,
+  "expected_raw_ids": 107,
+  "expected_canonical_ids": 79,
+  "subsystem_ranges": {
+    "A": [
+      1,
+      20
+    ],
+    "B": [
+      1,
+      18
+    ],
+    "C": [
+      1,
+      22
+    ],
+    "D": [
+      1,
+      22
+    ],
+    "E": [
+      1,
+      23
+    ]
+  },
+  "collision_resolutions": {
+    "C4": {
+      "canonical": "gsd:C4",
+      "finding": "Finding C4 (DATA-F4, Critical P0): `lp_parameters.schema.json` orphaned — validates no real file",
+      "task": "Task C4 (P1, SUL verification for Cu/Fe/I/Mn/Zn, blocked by G3+vet)",
+      "governance_legacy": "—",
+      "note": "Resolved in favour of finding namespace per ADR-0006 / §6: token C4 = finding (not task)"
+    },
+    "C7": {
+      "canonical": "gsd:C7",
+      "finding": "Finding C7 (DATA-F7, High P1): unit not bound to nutrient key",
+      "task": "Task C7 (D3 empty-200 validation fix)",
+      "governance_legacy": "—",
+      "note": "Resolved in favour of finding namespace per ADR-0006 / §6: token C7 = finding (not task)"
+    },
+    "C16": {
+      "canonical": "gsd:C16",
+      "finding": "Finding C16 (DATA-F16, Medium P2): mojibake in 17/28 display names",
+      "task": "Task C16 (dead floor-relaxation doc + file-handle leak)",
+      "governance_legacy": "—",
+      "note": "Resolved in favour of finding namespace per ADR-0006 / §6: token C16 = finding (not task)"
+    },
+    "R1": {
+      "canonical": "gsd:A2",
+      "finding": "Governance review R1 (= A2 antagonism slack)",
+      "task": "Regression task R1 (tautological assertions)",
+      "governance_legacy": "Legacy REVIEW.md R-01 (= A2)",
+      "note": "Resolved in favour of finding namespace per ADR-0006 / §6: token R1 = finding (not task)"
+    }
+  },
+  "mapa_2_0_remap": {
+    "C1": "A3",
+    "C2": "A2",
+    "C5": "C1",
+    "C7": "D1",
+    "C8": "A5",
+    "C9": "C4",
+    "H14": "E5",
+    "L5": "E23"
+  },
+  "alias_chains": {
+    "A3": [
+      "E1",
+      "E2",
+      "R4"
+    ],
+    "A2": [
+      "A14",
+      "R1"
+    ],
+    "B2": [],
+    "B1": [
+      "B11"
+    ],
+    "C1": [],
+    "C2": [
+      "DATA-F2",
+      "F3",
+      "F5",
+      "F7",
+      "C3",
+      "C5",
+      "C7"
+    ],
+    "C4": [],
+    "D1": [],
+    "A5": [],
+    "A1": []
+  },
+  "raw_to_canonical": {
+    "A1": "A1",
+    "A2": "A2",
+    "A3": "A3",
+    "A4": "A4",
+    "A5": "A5",
+    "A6": "A6",
+    "A7": "A7",
+    "A8": "A8",
+    "A9": "A9",
+    "A10": "A10",
+    "A11": "A11",
+    "A12": "A12",
+    "A13": "A13",
+    "A14": "A2",
+    "A15": "A15",
+    "A16": "A16",
+    "A17": "A17",
+    "A18": "A18",
+    "A19": "A19",
+    "A20": "A20",
+    "B1": "B1",
+    "B2": "B2",
+    "B3": "B3",
+    "B4": "B4",
+    "B5": "B5",
+    "B6": "B6",
+    "B7": "B7",
+    "B8": "B8",
+    "B9": "B9",
+    "B10": "B10",
+    "B11": "B1",
+    "B12": "B12",
+    "B13": "B13",
+    "B14": "B14",
+    "B15": "B15",
+    "B16": "B16",
+    "B17": "B17",
+    "B18": "B18",
+    "C1": "A3",
+    "C2": "A2",
+    "C3": "C2",
+    "C4": "C4",
+    "C5": "C1",
+    "C6": "C6",
+    "C7": "C7",
+    "C8": "A5",
+    "C9": "C4",
+    "C10": "C10",
+    "C11": "C11",
+    "C12": "C12",
+    "C13": "C13",
+    "C14": "C14",
+    "C15": "C15",
+    "C16": "C16",
+    "C17": "C17",
+    "C18": "C18",
+    "C19": "C19",
+    "C20": "C20",
+    "C21": "C21",
+    "C22": "C22",
+    "D1": "D1",
+    "D2": "D2",
+    "D3": "D3",
+    "D4": "D4",
+    "D5": "D5",
+    "D6": "D6",
+    "D7": "D7",
+    "D8": "D8",
+    "D9": "D9",
+    "D10": "D10",
+    "D11": "D11",
+    "D12": "D12",
+    "D13": "D13",
+    "D14": "D14",
+    "D15": "D15",
+    "D16": "D16",
+    "D17": "D17",
+    "D18": "D18",
+    "D19": "D19",
+    "D20": "D20",
+    "D21": "D21",
+    "D22": "D22",
+    "E1": "A3",
+    "E2": "A3",
+    "E3": "A8",
+    "E4": "E4",
+    "E5": "E5",
+    "E6": "E6",
+    "E7": "E7",
+    "E8": "E8",
+    "E9": "E9",
+    "E10": "E10",
+    "E11": "E11",
+    "E12": "E12",
+    "E13": "E13",
+    "E14": "E14",
+    "E15": "E15",
+    "E16": "E16",
+    "E17": "E17",
+    "E18": "E18",
+    "E19": "E19",
+    "E20": "E20",
+    "E21": "E21",
+    "E22": "E22",
+    "E23": "E23",
+    "E24": "E24",
+    "E25": "E25"
+  },
+  "orphan_canonicals": [],
+  "bug_facts_remap_note": "BUG_FACTS entries with IDs in collision_resolutions must be remapped to canonical IDs before static JSON export. See bug-facts-replacement-plan.md",
+  "graph_edges": [
+    {
+      "id": "edge_1",
+      "from": "A3",
+      "to": "B0",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_2",
+      "from": "A2",
+      "to": "B0",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_3",
+      "from": "B2",
+      "to": "B0",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_4",
+      "from": "A3",
+      "to": "B0",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_5",
+      "from": "D1",
+      "to": "B0",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_6",
+      "from": "A1",
+      "to": "B10",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_7",
+      "from": "B12",
+      "to": "B7",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_8",
+      "from": "B12",
+      "to": "B1",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_9",
+      "from": "A2",
+      "to": "B2a",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_10",
+      "from": "A2",
+      "to": "B2a",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_11",
+      "from": "B2b",
+      "to": "B2a",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_12",
+      "from": "B2b",
+      "to": "G3",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_13",
+      "from": "A6",
+      "to": "B2b",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_14",
+      "from": "B3",
+      "to": "G3",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_15",
+      "from": "B2",
+      "to": "B3",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_16",
+      "from": "B4",
+      "to": "G3",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_17",
+      "from": "B1",
+      "to": "B4",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_18",
+      "from": "B5",
+      "to": "B4",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_19",
+      "from": "B5",
+      "to": "B7",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_20",
+      "from": "D1",
+      "to": "B5",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_21",
+      "from": "B6",
+      "to": "B7",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_22",
+      "from": "A3",
+      "to": "B6",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_23",
+      "from": "C4",
+      "to": "B6",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_24",
+      "from": "C13",
+      "to": "B6",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_25",
+      "from": "A2",
+      "to": "B7",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_26",
+      "from": "C2",
+      "to": "B7",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_27",
+      "from": "C1",
+      "to": "B7",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_28",
+      "from": "D1",
+      "to": "B7",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_29",
+      "from": "B8",
+      "to": "B7",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_30",
+      "from": "C4",
+      "to": "B8",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_31",
+      "from": "C11",
+      "to": "B8",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_32",
+      "from": "A5",
+      "to": "B9",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_33",
+      "from": "C10",
+      "to": "B5",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_34",
+      "from": "D6",
+      "to": "C10",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_35",
+      "from": "C11",
+      "to": "B5",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_36",
+      "from": "D7",
+      "to": "C11",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_37",
+      "from": "D12",
+      "to": "C11",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_38",
+      "from": "C12",
+      "to": "B5",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_39",
+      "from": "D8",
+      "to": "C12",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_40",
+      "from": "E4",
+      "to": "C13_task",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_41",
+      "from": "C14",
+      "to": "B5",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_42",
+      "from": "C14",
+      "to": "B6",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_43",
+      "from": "E6",
+      "to": "C14",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_44",
+      "from": "E19",
+      "to": "C14",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_45",
+      "from": "E7",
+      "to": "C15",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_46",
+      "from": "A7",
+      "to": "C16",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_47",
+      "from": "E8",
+      "to": "C16",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_48",
+      "from": "C1_task",
+      "to": "B2a",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_49",
+      "from": "A4",
+      "to": "C1_task",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_50",
+      "from": "A8",
+      "to": "C2_task",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_51",
+      "from": "A8",
+      "to": "C2_task",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_52",
+      "from": "B4",
+      "to": "C2",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_53",
+      "from": "C4_task",
+      "to": "G3",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_54",
+      "from": "B6",
+      "to": "C4_task",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_55",
+      "from": "B10",
+      "to": "C4_task",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_56",
+      "from": "C1",
+      "to": "B7",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_57",
+      "from": "C1",
+      "to": "B8",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_58",
+      "from": "C6",
+      "to": "C1",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_59",
+      "from": "A5",
+      "to": "C1",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_60",
+      "from": "C10",
+      "to": "C1",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_61",
+      "from": "C11",
+      "to": "C1",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_62",
+      "from": "C12",
+      "to": "C1",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_63",
+      "from": "C13",
+      "to": "C1",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_64",
+      "from": "D2",
+      "to": "C6",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_65",
+      "from": "D1",
+      "to": "B5",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_66",
+      "from": "D3",
+      "to": "D1",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_67",
+      "from": "A5",
+      "to": "B5",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_68",
+      "from": "D4",
+      "to": "A5",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_69",
+      "from": "C4",
+      "to": "B5",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_70",
+      "from": "D5",
+      "to": "C4",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_71",
+      "from": "E16",
+      "to": "A2",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_72",
+      "from": "E17",
+      "to": "R2",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_73",
+      "from": "E18",
+      "to": "R3",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_74",
+      "from": "E5",
+      "to": "R3",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_75",
+      "from": "R5",
+      "to": "A2",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_76",
+      "from": "R5",
+      "to": "R2",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_77",
+      "from": "R5",
+      "to": "R3",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_78",
+      "from": "R5",
+      "to": "A3",
+      "kind": "blockedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_79",
+      "from": "A19",
+      "to": "R5",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_80",
+      "from": "D22",
+      "to": "R5",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    },
+    {
+      "id": "edge_81",
+      "from": "A12",
+      "to": "R5",
+      "kind": "repairedBy",
+      "source": "bug-facts.ts"
+    }
+  ],
+  "graph_edge_count": 81,
+  "migration_applied": true,
+  "generated_at": "2026-07-29T02:10:35.995087+00:00",
+  "applied_at": "2026-07-29T02:10:35.995677+00:00"
+}

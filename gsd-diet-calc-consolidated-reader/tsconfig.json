@@ -26,6 +26,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@metaharness/graph-repository": [
+        "../../packages/graph-repository/src"
       ]
     }
   },

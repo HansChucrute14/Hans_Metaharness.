@@ -1,0 +1,360 @@
+--- PART-2-The-Fix-Remediation-Plan-and-Roadmap.md
++++ PART-2-The-Fix-Remediation-Plan-and-Roadmap.md (canonicalized)
+@@ -10,7 +10,7 @@
+ 
+ This is the **treatment layer** of the consolidated documentation set. Part 1 (Diagnosis) establishes what is wrong — the full catalog of defects across the LP solver, the nutrition model, the ingredient database, the validation pipeline, the output contract, and the test suite — integrated with the as-built code reality. This document (Part 2) presents the complete, sequenced, dependency-ordered remediation program that addresses every defect. Part 3 (Synthesis) distills the diagnosis and this program into a single verified top-level view.
+ 
+-The program is organized around a single canonical task catalog (§4) that reconciles every task identifier into one system. The amendment's empirical findings — most critically that Level 1 (`SAFE_TO_FEED`) is structurally unreachable, that recommendation severity is invisible, and that the validation package's missing `_shared.py` module is breaking the entire CI pipeline — are folded in as the current truth throughout. Tasks B2a and B2b (the split of the original B2 into hardening and severity-scaled recommendation) and the new tasks B11 (Level-1 infeasibility diagnosis) and B12 (arginine canonicalization) are presented as established task definitions, not as corrections to an earlier plan. A global ID key (`APPENDIX-ID-KEY.md` in this directory) disambiguates the finding-namespace and task-namespace C-series (which share the `C` prefix but refer to different objects — findings in Part 1, tasks in Part 2 §6–§7) and maps the non-monotonic `P0-N` numbering to the canonical `B-series` task IDs used throughout this catalog.
++The program is organized around a single canonical task catalog (§4) that reconciles every task identifier into one system. The amendment's empirical findings — most critically that Level 1 (`SAFE_TO_FEED`) is structurally unreachable, that recommendation severity is invisible, and that the validation package's missing `_shared.py` module is breaking the entire CI pipeline — are folded in as the current truth throughout. Tasks B2a and B2b (the split of the original B2 into hardening and severity-scaled recommendation) and the new tasks gsd:B1 (Level-1 infeasibility diagnosis) and B12 (arginine canonicalization) are presented as established task definitions, not as corrections to an earlier plan. A global ID key (`APPENDIX-ID-KEY.md` in this directory) disambiguates the finding-namespace and task-namespace C-series (which share the `C` prefix but refer to different objects — findings in Part 1, tasks in Part 2 §6–§7) and maps the non-monotonic `P0-N` numbering to the canonical `B-series` task IDs used throughout this catalog.
+ 
+ **Safety non-negotiable (governs everything below):** This is a canine diet formulation system. Until the P0 safety and truthfulness defects are fixed AND a board-certified veterinary nutritionist (DACVN/ECVCN) signs off, **no diet produced by this system may be fed to an animal**, every `SAFE_TO_FEED` is suspect, every hardcoded `"adequate"` is invalid, every soft constraint declared hard is a safety defect, and the missing absolute Ca/P ceiling is a large-breed-growth safety defect. YAGNI applies to *complexity*; it never applies to truthful output, hard safety constraints, schema validity, deterministic reproduction, regression tests for safety defects, importability of safety-critical packages, canonical nutrient namespace, correct units, correct solver-status handling, or correct feeding-recommendation logic. The veterinary sign-off process and user-facing safety disclaimer that operationalize this non-negotiable are specified in `APPENDIX-SAFETY-PROCESS.md`.
+ 
+@@ -90,15 +90,15 @@
+ 
+ ### Critical Safety Triad
+ 
+-The three most grave defects — the hardcoded `nutrient_results` placeholder (A3/E1), the soft antagonism constraints declared hard (A2/A14), and the missing absolute Ca/P ceiling (B2/B3) — form the critical safety triad. They are remediated by Task B1 (truthful nutrient results), Task B2a (hard antagonisms at Level 1) + Task B2b (severity-scaled recommendation), and Task B3 (Ca/P ceilings). The safety freeze (Task B0) backstops all three until the real fixes land.
++The three most grave defects — the hardcoded `nutrient_results` placeholder (A3/gsd:A3), the soft antagonism constraints declared hard (A2/gsd:A2), and the missing absolute Ca/P ceiling (B2/B3) — form the critical safety triad. They are remediated by Task B1 (truthful nutrient results), Task B2a (hard antagonisms at Level 1) + Task B2b (severity-scaled recommendation), and Task B3 (Ca/P ceilings). The safety freeze (Task B0) backstops all three until the real fixes land.
+ 
+ ### LP / Config Truthfulness
+ 
+-Defects A1 (lexicographic stage order), A4 (antagonism penalty units mismatch), A5 (objective_weights.json unused), A6 (config-driven recommendation), A7 (clinical floor relaxation unimplemented), A8 (status collapse), A9 (Big-M fallback), A10 (tie-break auto-scale), A11 (sanity assertion ignores bioavailability), A13 (rounded grams not re-validated), A17 (fix_optimum tolerance), A18 (coefficient range), A19 (dead code), A20 (inclusion relaxation) are remediated by Tasks B10, C1, B9, B2b, C16, C2, and the P2/P3 debt items.
++Defects A1 (lexicographic stage order), A4 (antagonism penalty units mismatch), A5 (objective_weights.json unused), A6 (config-driven recommendation), A7 (clinical floor relaxation unimplemented), A8 (status collapse), A9 (Big-M fallback), A10 (tie-break auto-scale), A11 (sanity assertion ignores bioavailability), A13 (rounded grams not re-validated), A17 (fix_optimum tolerance), A18 (coefficient range), A19 (dead code), A20 (inclusion relaxation) are remediated by Tasks B10, gsd:A3, B9, B2b, C16, gsd:A2, and the P2/P3 debt items.
+ 
+ ### Data Governance
+ 
+-Defects C1 (schema non-conformance), C2 (no canonical enumeration), C3 (namespace fragmentation), C4 (orphaned schema), C5 (duplicate entries), C6 (no numeric bounds), C7 (unit not bound to key), C8 (missing additionalProperties), C10 (source_ref divergence), C11 (no min≤max invariant), C12 (id pattern inconsistency), C13 (3-state collapse), C16 (mojibake), C19 (note maxLength), C20 (AA key overlap), C21 (bioavailability factors), C22 (hardcoded counts) are remediated by Tasks B7, B8, B6, C5, and the P2/P3 items.
++Defects gsd:A3 (schema non-conformance), gsd:A2 (no canonical enumeration), gsd:C2 (namespace fragmentation), C4 (orphaned schema), gsd:gsd:A3 (duplicate entries), C6 (no numeric bounds), gsd:D1 (unit not bound to key), gsd:A5 (missing additionalProperties), C10 (source_ref divergence), C11 (no min≤max invariant), C12 (id pattern inconsistency), C13 (3-state collapse), C16 (mojibake), C19 (note maxLength), C20 (AA key overlap), C21 (bioavailability factors), C22 (hardcoded counts) are remediated by Tasks B7, B8, B6, gsd:gsd:A3, and the P2/P3 items.
+ 
+ ### Validation Pipeline
+ 
+@@ -108,45 +108,45 @@
+ 
+ ### Nutrition Science
+ 
+-Defects B1 (growth DER k=1.2 flat), B4 (hardcoded moisture/ash), B5 (no age tapering), B6–B10 (SULs permissive/unverified), B11 (scenario labels inverted), B12 (cobalamin unit), B13 (Vit-A plausibility), B14 (bone Ca:P), B15 (taurine absent), B16 (Vit-D min), B17 (SUL mislabel), B18 (nutrient-count inconsistency) are remediated by Tasks B4, C3, C4, and P1 items.
++Defects B1 (growth DER k=1.2 flat), B4 (hardcoded moisture/ash), B5 (no age tapering), B6–B10 (SULs permissive/unverified), gsd:B1 (scenario labels inverted), B12 (cobalamin unit), B13 (Vit-A plausibility), B14 (bone Ca:P), B15 (taurine absent), B16 (Vit-D min), B17 (SUL mislabel), B18 (nutrient-count inconsistency) are remediated by Tasks B4, gsd:C2, C4, and P1 items.
+ 
+ ### Cross-Cutting
+ 
+-Defects E1–E23 (output contract, architecture, tests, CLI, packaging, documentation, types) are remediated by Tasks B1, B10, C13–C16, R1–R5, and P2/P3 items.
++Defects gsd:A3–E23 (output contract, architecture, tests, CLI, packaging, documentation, types) are remediated by Tasks B1, B10, C13–C16, gsd:A2–R5, and P2/P3 items.
+ 
+ ---
+ 
+ ## §4. Canonical Task Catalog
+ 
+-The program uses a single canonical task system. The original work was labeled under two parallel schemes — P0-1 through P0-10 (finding-cluster plans) and B0 through B10 (executive task form) — plus the amendment's additions (B2a, B2b, B11, B12), the P1 hardening tasks (C1–C16), and the Phase 3 regression tasks (R1–R5). The master reconciliation table below maps every identifier to its canonical name, the defect(s) it repairs, its priority, and its dependencies.
++The program uses a single canonical task system. The original work was labeled under two parallel schemes — P0-1 through P0-10 (finding-cluster plans) and B0 through B10 (executive task form) — plus the amendment's additions (B2a, B2b, gsd:B1, B12), the P1 hardening tasks (gsd:A3–C16), and the Phase 3 regression tasks (gsd:A2–R5). The master reconciliation table below maps every identifier to its canonical name, the defect(s) it repairs, its priority, and its dependencies.
+ 
+ ### Master Task Reconciliation
+ 
+ | Canonical ID | Aliases | Defects Repaired (Part 1 finding IDs) | Priority | Blocked By |
+ |---|---|---|---|---|
+-| **B0** | §5 safety freeze | A3, A2, B2, C1, D1 (interim containment) | P0 | none |
+-| **B1** | P0-1 | A3, E1, E2 | P0 | B7 (clean min/max source) |
+-| **B2a** | P0-2 (split) | A2, A14 | P0 | none (G1 resolved) |
++| **B0** | §5 safety freeze | A3, A2, B2, gsd:A3, D1 (interim containment) | P0 | none |
++| **B1** | P0-1 | A3, gsd:A3, gsd:A3 | P0 | B7 (clean min/max source) |
++| **B2a** | P0-2 (split) | A2, gsd:A2 | P0 | none (G1 resolved) |
+ | **B2b** | P0-2 (split) | A6, B-i, B-ii | P0 | B2a; G3 (thresholds) + vet |
+ | **B3** | P0-3 | B2, B3 | P0 | G3 (Ca/P values) + vet |
+-| **B4** | P0-4 | B1, B5, B11 | P0 | G3 (taper values) + vet |
++| **B4** | P0-4 | B1, B5, gsd:B1 | P0 | G3 (taper values) + vet |
+ | **B5** | P0-8 | D1 | P0 | B7 (canonical units, recommended) |
+-| **B6** | P0-6 | C1, C9, C13 | P0 | B7 (schema tightening) |
+-| **B7** | P0-5 | C2, C3, C5, C7, B18, C6 | P0 | chicken_blood_raw Mg source (verify FDC) |
++| **B6** | P0-6 | gsd:A3, gsd:C4, C13 | P0 | B7 (schema tightening) |
++| **B7** | P0-5 | gsd:A2, gsd:C2, gsd:gsd:A3, gsd:D1, B18, C6 | P0 | chicken_blood_raw Mg source (verify FDC) |
+ | **B8** | P0-7 | C4, C11 | P0 | B7 (registry shape) |
+ | **B9** | P0-9 | A5 | P0 | G2 (resolved: DELETE) |
+ | **B10** | P0-10 | A1 | P0 | none |
+-| **B11** | (new) | B-i, B-iii (Level-1 infeasibility) | P0 | none (diagnostic) |
++| **gsd:B1** | (new) | B-i, B-iii (Level-1 infeasibility) | P0 | none (diagnostic) |
+ | **B12** | (new) | B-iv (arginine; folds into B7) | P0 | B7 (registry/namespace) |
+-| **C1** | P1-A4 | A4 | P1 | B2a |
+-| **C2** | P1-A8 | A8, E3 | P1 | none |
+-| **C3** | P1-B4 | B4 | P1 | moisture/ash data in DB |
++| **gsd:A3** | P1-A4 | A4 | P1 | B2a |
++| **gsd:A2** | P1-A8 | A8, gsd:A8 | P1 | none |
++| **gsd:C2** | P1-B4 | B4 | P1 | moisture/ash data in DB |
+ | **C4** | P1-B6..B10 | B6–B10, B17 | P1 | G3 + vet |
+-| **C5** | P1-C6..C13 | C6, C8, C10, C11, C12, C13 | P1 | B7, B8 |
++| **gsd:gsd:A3** | P1-C6..C13 | C6, gsd:A5, C10, C11, C12, C13 | P1 | B7, B8 |
+ | **C6** | P1-D2 | D2 | P1 | none (security; do early) |
+-| **C7** | P1-D3 | D3 | P1 | B5 |
+-| **C8** | P1-D4 | D4 | P1 | B5 |
+-| **C9** | P1-D5 | D5 | P1 | B5 |
++| **gsd:D1** | P1-D3 | D3 | P1 | B5 |
++| **gsd:A5** | P1-D4 | D4 | P1 | B5 |
++| **gsd:C4** | P1-D5 | D5 | P1 | B5 |
+ | **C10** | P1-D6 | D6 | P1 | B5 |
+ | **C11** | P1-D7 | D7, D12 | P1 | B5 |
+ | **C12** | P1-D8 | D8 | P1 | B5 |
+@@ -154,11 +154,11 @@
+ | **C14** | P1-E6 | E6, E19 | P1 | B5, B6 |
+ | **C15** | P1-E7 | E7 | P1 | none (documentation) |
+ | **C16** | P1-A7 | A7, E8 | P1 | none |
+-| **R1** | — | E16 | P2 | after fixes they lock |
++| **gsd:A2** | — | E16 | P2 | after fixes they lock |
+ | **R2** | — | E17 | P2 | after fixes |
+ | **R3** | — | E18, E5 | P2 | after fixes |
+ | **R4** | — | proof discipline | P2 | after fixes |
+-| **R5** | — | A19, D22, A12 | P3 | R1–R4 |
++| **R5** | — | A19, D22, A12 | P3 | gsd:A2–R4 |
+ 
+ ### Detailed Task Definitions
+ 
+@@ -168,7 +168,7 @@
+ 
+ #### Task B0: Fail-Closed Safety Freeze (Interim Guard)
+ 
+-**Repairs:** A3, A2, B2, C1, D1 (interim containment for all).
++**Repairs:** A3, A2, B2, gsd:A3, D1 (interim containment for all).
+ **Root Cause:** The system can currently emit `SAFE_TO_FEED` and `"adequate"` while multiple safety defects are live; there is no honest top-level "do not feed" gate.
+ 
+ **TDD Red/Green:**
+@@ -193,7 +193,7 @@
+ 
+ #### Task B1: Fix Hardcoded `nutrient_results` Placeholder
+ 
+-**Repairs:** A3, E1, E2.
++**Repairs:** A3, gsd:A3, gsd:A3.
+ **Root Cause:** `solver.py:1213–1224` hardcodes `status:"adequate"` for all nutrients; `target_min` is set to `sul_value if safety_hard else None`; `value=targets_per_day.get(nid,0)` silently zeroes any nutrient absent from the scenario targets. The output validator checks keys, not values. Mins/maxs are fragmented across files.
+ 
+ **TDD Red/Green:**
+@@ -221,18 +221,18 @@
+ 
+ #### Task B2a: Harden Mineral Antagonisms at Level 1
+ 
+-**Repairs:** A2, A14.
++**Repairs:** A2, gsd:A2.
+ **Root Cause:** Config declares `solver_behavior:HARD_FAIL_INFEASIBLE` (60 times in `constraints.json`) but the solver builds the ratios "with slack for goal programming" (`solver.py:425,434,467,472`), unpenalized in L2/L3 — a config↔code contradiction that lets ratio violations pass silently.
+ 
+ **TDD Red/Green:**
+ - **Red:** `grep -c HARD_FAIL_INFEASIBLE data/constraints.json` → `60` while `grep -n 'with slack for goal programming' src/gsd/solver.py` → `425`. (Captured.)
+-- **Green:** A fixture engineered to violate Zn:Cu returns Level-1 **infeasible / `DO_NOT_FEED`** (hard, no slack). In Levels 2/3 the slack is penalized (normalized — see Task C1) and its magnitude is exposed in the output as `antagonism_slack`. `feeding_rec` is never `SAFE_TO_FEED` when any antagonism slack > tolerance.
++- **Green:** A fixture engineered to violate Zn:Cu returns Level-1 **infeasible / `DO_NOT_FEED`** (hard, no slack). In Levels 2/3 the slack is penalized (normalized — see Task gsd:A3) and its magnitude is exposed in the output as `antagonism_slack`. `feeding_rec` is never `SAFE_TO_FEED` when any antagonism slack > tolerance.
+ 
+ **Defense-in-Depth Guardrail:** Assertion that no Level-1 allocation violates any ratio bound. The B0 safety freeze trips on any antagonism slack > tolerance.
+ 
+ **Minimal Action Steps:**
+ 1. In `build_lp_problem`, branch on `constraint.solver_behavior`: `HARD_FAIL_INFEASIBLE` ⇒ add the ratio bound from `lp_coefficients.bounds` with **no slack** at Level 1.
+-2. For Levels 2/3 keep slack but **penalize** it (normalized — see C1) and **record** `antagonism_slack` per constraint in `raw_result`.
++2. For Levels 2/3 keep slack but **penalize** it (normalized — see gsd:A3) and **record** `antagonism_slack` per constraint in `raw_result`.
+ 3. In `build_output_contract`, derive `feeding_rec` from realized slack: any antagonism slack > tol ⇒ at most `FEED_WITH_CAUTION`; > hard tol ⇒ `DO_NOT_FEED`.
+ 4. Remove or truthfully implement the `HARD_FAIL_INFEASIBLE` flag (no lying config).
+ 
+@@ -242,7 +242,7 @@
+ - **Execute:** `pytest tests/test_antagonism_hard.py -v`
+ - **Assert Output:** `1 passed` — Zn:Cu-violating fixture asserts Level-1 result is infeasible/`DO_NOT_FEED`; `antagonism_slack` is non-zero; `feeding_rec != "SAFE_TO_FEED"`.
+ 
+-**Regression Risk:** Medium — making ratios hard can turn some previously "feasible" selections infeasible (that is the intended safety effect); ensure Level 2/3 still provide a diagnostic path. **Rollback:** revert; safety guard re-detects slack. **Priority:** P0. **Estimate:** small–medium. **Blocked by:** none (G1 resolved). Pairs with C1 (normalization) and B2b (recommendation).
++**Regression Risk:** Medium — making ratios hard can turn some previously "feasible" selections infeasible (that is the intended safety effect); ensure Level 2/3 still provide a diagnostic path. **Rollback:** revert; safety guard re-detects slack. **Priority:** P0. **Estimate:** small–medium. **Blocked by:** none (G1 resolved). Pairs with gsd:A3 (normalization) and B2b (recommendation).
+ 
+ ---
+ 
+@@ -316,7 +316,7 @@
+ 
+ #### Task B4: Fix Growth-Energy Model and Scenario Labels
+ 
+-**Repairs:** B1, B5, B11.
++**Repairs:** B1, B5, gsd:B1.
+ **Root Cause:** A flat `k=1.2×RER` is hardcoded for the "recommended" scenario (`core.py:199–207` `SCENARIO_K_MAP`); `scenarios.json` lacks a `k_multiplier_ref` (the `core.py` comment itself says it "must eventually live" in data); labels are inverted (the growth-appropriate multiplier k=2.0 is labeled "discouraged" while the underfeeding k=1.2 is labeled "recommended"). The recommended scenario underfeeds a young puppy ~40–60%.
+ 
+ **TDD Red/Green:**
+@@ -374,7 +374,7 @@
+ 
+ #### Task B6: Repair DB Schema Conformance and Add CI Schema Gate
+ 
+-**Repairs:** C1, C9, C13.
++**Repairs:** gsd:A3, gsd:C4, C13.
+ **Root Cause:** 21 schema errors shipped (20 measured entries missing `unit`; 1 note exceeding 200-char `maxLength`); no CI gate enforces conformance; the 3-state contract collapses (`missing` used 0 times; 48 ambiguous `measured:0`).
+ 
+ **TDD Red/Green:**
+@@ -385,7 +385,7 @@
+ 
+ **Minimal Action Steps:**
+ 1. Add `unit` to the 20 measured entries; trim the one over-long `note` (`pork_fat_raw/ara_arachidonic_acid_g`, 208>200).
+-2. Strip the UTF-8 BOM from `nutrient_set_minimal.json` + `nutrient_safety.schema.json` (C9).
++2. Strip the UTF-8 BOM from `nutrient_set_minimal.json` + `nutrient_safety.schema.json` (gsd:C4).
+ 3. Enforce the 3-state contract: require explicit `missing`/`not_applicable`; forbid ambiguous `measured:0` for safety nutrients.
+ 4. Add a CI `schema-gate` job running `python -m gsd.cli --validate-db` (or a small jsonschema script over all data↔schema pairs).
+ 
+@@ -401,7 +401,7 @@
+ 
+ #### Task B7: Create Canonical Nutrient Namespace and Unit Binding
+ 
+-**Repairs:** C2, C3, C5, C7, B18, C6.
++**Repairs:** gsd:A2, gsd:C2, gsd:gsd:A3, gsd:D1, B18, C6.
+ **Root Cause:** Three naming schemes coexist; the schema matches by pattern+count (not an enumerated key set); unit is not bound to key; a real conflicting duplicate exists (`chicken_blood_raw` Mg 20.5 vs 5.0 mg). The 28 ingredients yield 9 distinct key-sets (48-union/43-intersection); map↔DB nutrient-key overlap = 0. A typo passes the schema undetected.
+ 
+ **TDD Red/Green:**
+@@ -510,7 +510,7 @@
+ 
+ **TDD Red/Green:**
+ - **Red:** `solve_cascade(broad_selection, …)` returns `solver_status="suboptimal"` (Level 2); a direct Level-1 solve returns infeasible. (Captured.)
+-- **Green:** A diagnosis identifies the **minimal unsatisfiable constraint subset** (IIS) — the specific constraint(s) that make Level 1 infeasible — and a recommended fix mapped to an existing task (e.g. DER/`k=1.2` → B4; moisture bias → C3; an over-strict `_MIN` floor → adjust with citation; clinical-floor MILP → relax/repair).
++- **Green:** A diagnosis identifies the **minimal unsatisfiable constraint subset** (IIS) — the specific constraint(s) that make Level 1 infeasible — and a recommended fix mapped to an existing task (e.g. DER/`k=1.2` → B4; moisture bias → gsd:C2; an over-strict `_MIN` floor → adjust with citation; clinical-floor MILP → relax/repair).
+ 
+ **Defense-in-Depth Guardrail:** After the implicated fix lands, re-run the broad selection and assert Level 1 becomes reachable (`SAFE_TO_FEED`) for at least one compliant selection.
+ 
+@@ -523,7 +523,7 @@
+ - **Execute:** `pytest tests/test_level1_diagnosis.py -v` (a diagnostic that prints the non-zero-slack constraints)
+ - **Assert Output:** The diagnosis names ≥1 specific blocking constraint with its slack magnitude; report written to `docs/governance/level1_infeasibility_diagnosis.md`.
+ 
+-**Regression Risk:** None (diagnostic). **Rollback:** n/a. **Priority:** P0. **Estimate:** small. **Blocked by:** none (diagnostic). Informs whether B4/C3 restore Level 1. This is a cheap, high-information task that should run early.
++**Regression Risk:** None (diagnostic). **Rollback:** n/a. **Priority:** P0. **Estimate:** small. **Blocked by:** none (diagnostic). Informs whether B4/gsd:C2 restore Level 1. This is a cheap, high-information task that should run early.
+ 
+ ---
+ 
+@@ -532,7 +532,7 @@
+ **Repairs:** B-iv (folds into B7).
+ **Root Cause:** `arginine_g` exists in the DB (`beef_muscle_raw = 1.32 g` as-fed, measured, `source_ref REF_USDA_FDC_170196`; `beef_liver_raw = 1.241 g`; `chicken_neck_raw = 0.975 g` inferred) but as a **top-level `bromatological_profile` key**, not under the canonical `bp["nutrients"]` dict the solver reads. It is also **absent from the 17 scenario targets** (which include `lysine_g`). So the solver reports `arginine_g = 0` and the Lys:Arg antagonism cannot be evaluated.
+ 
+-However, direct verification against the live repository established that `arginine_g` is **already correctly placed** under `bp["nutrients"]` for all 28 ingredients, is in `NUTRIENT_REGISTRY` (`lp_parameters_data.json:20`), has its own AAFCO minimum constraint in `constraints.json` (`arginine_g >= 2.5`), and `build_matrix()` carries it correctly (e.g. `beef_muscle_raw → 6.86`, `chicken_muscle_raw → 11.94`, energy-normalized). The Lys:Arg constraint (`1.0*arginine_g <= lysine_g <= 1.4*arginine_g`) is built with the correct value. The actual defect is the **reporting layer** (the C1/B1 defect): `arginine_g` is not among the 17 scenario targets, so `targets_per_day.get(nid, 0)` defaults to `0` — the same mechanism as C1, not an arginine-specific problem.
++However, direct verification against the live repository established that `arginine_g` is **already correctly placed** under `bp["nutrients"]` for all 28 ingredients, is in `NUTRIENT_REGISTRY` (`lp_parameters_data.json:20`), has its own AAFCO minimum constraint in `constraints.json` (`arginine_g >= 2.5`), and `build_matrix()` carries it correctly (e.g. `beef_muscle_raw → 6.86`, `chicken_muscle_raw → 11.94`, energy-normalized). The Lys:Arg constraint (`1.0*arginine_g <= lysine_g <= 1.4*arginine_g`) is built with the correct value. The actual defect is the **reporting layer** (the C1/B1 defect): `arginine_g` is not among the 17 scenario targets, so `targets_per_day.get(nid, 0)` defaults to `0` — the same mechanism as gsd:A3, not an arginine-specific problem.
+ 
+ **Reframed Task:** B12 is reframed as "confirm that fixing B1 (the `nutrient_results` placeholder) also corrects arginine display," rather than "relocate the arginine key." The LP already respects Lys:Arg internally; only the output reporting layer is broken.
+ 
+@@ -581,7 +581,7 @@
+ 1. **B0 (safety freeze)** — independent; backstops everything. First commit.
+ 2. **B5 (restore import)** — the CI is red today; this unblocks the entire pipeline. Most urgent G3-independent task.
+ 3. **B6 (schema gate)** — prevents data drift from recurring.
+-4. **B11 (Level-1 diagnosis)** — cheap, high-information; informs whether B4/C3 restore Level 1.
++4. **gsd:B1 (Level-1 diagnosis)** — cheap, high-information; informs whether B4/gsd:C2 restore Level 1.
+ 5. **B2a (harden antagonisms)** — G1 resolved (HARD); independent.
+ 6. **B9 (delete objective_weights.json)** — G2 resolved (DELETE); removes dead config.
+ 7. **B10 (fix stage order)** — independent.
+@@ -608,16 +608,16 @@
+ 
+ ### Truthfulness Tasks
+ 
+-- **B1** — truthful `nutrient_results` (repairs A3/E1/E2). See §4.
++- **B1** — truthful `nutrient_results` (repairs A3/E1/gsd:A3). See §4.
+ - **B9** — objective source of truth (repairs A5). See §4.
+ - **B10** — lexicographic stage order (repairs A1). See §4.
+ 
+ ### Hard Safety Tasks
+ 
+-- **B2a** — hard antagonisms at Level 1 (repairs A2/A14). See §4.
++- **B2a** — hard antagonisms at Level 1 (repairs A2/gsd:A2). See §4.
+ - **B2b** — severity-scaled recommendation, the decisive protection (repairs A6/B-i/B-ii). See §4.
+ - **B3** — absolute Ca/P ceilings (repairs B2/B3). See §4. Blocked by G3 + vet.
+-- **B4** — growth-energy model and scenario labels (repairs B1/B5/B11). See §4. Blocked by G3 + vet.
++- **B4** — growth-energy model and scenario labels (repairs B1/B5/gsd:B1). See §4. Blocked by G3 + vet.
+ 
+ ### Data Governance Tasks
+ 
+@@ -632,21 +632,21 @@
+ 
+ ### Diagnosis Task
+ 
+-- **B11** — diagnose Level-1 infeasibility (repairs B-i/B-iii). See §4.
++- **gsd:B1** — diagnose Level-1 infeasibility (repairs B-i/B-iii). See §4.
+ 
+ ### P1 Hardening Tasks (C-series)
+ 
+ | Task | Repairs | Smallest Viable Fix | Blocked By |
+ |---|---|---|---|
+-| **C1** | A4 | Normalize antagonism slack (`slack/target_ratio`) before weighting so all L1 terms are dimensionless | B2a |
+-| **C2** | A8, E3 | Branch on `prob.status` → `unbounded/timeout/numerical/infeasible`, all → `DO_NOT_FEED` but diagnosable; surface a `Not Solved` incumbent | none |
+-| **C3** | B4 | Store measured moisture/ash per ingredient; compute DM from data instead of 72%/1% | moisture/ash data in DB |
++| **gsd:A3** | A4 | Normalize antagonism slack (`slack/target_ratio`) before weighting so all L1 terms are dimensionless | B2a |
++| **gsd:A2** | A8, gsd:A8 | Branch on `prob.status` → `unbounded/timeout/numerical/infeasible`, all → `DO_NOT_FEED` but diagnosable; surface a `Not Solved` incumbent | none |
++| **gsd:C2** | B4 | Store measured moisture/ash per ingredient; compute DM from data instead of 72%/1% | moisture/ash data in DB |
+ | **C4** | B6–B10, B17 | Verify & correct each SUL against cited AAFCO/NRC/FEDIAF source; fix mislabels; every SUL carries a resolving `source_ref` | G3 + vet |
+-| **C5** | C6, C8, C10, C11, C12, C13 | Schema hardening: numeric bounds, unit-key binding, `additionalProperties:false` on 7 object types, `source_ref ∈ registry`, `min≤max`, 3-state enforcement | B7, B8 |
++| **gsd:gsd:A3** | C6, gsd:A5, C10, C11, C12, C13 | Schema hardening: numeric bounds, unit-key binding, `additionalProperties:false` on 7 object types, `source_ref ∈ registry`, `min≤max`, 3-state enforcement | B7, B8 |
+ | **C6** | D2 | FDC API key in header (not URL param); scrub `str(exc)`; **rotate the key** | none (security; do early) |
+-| **C7** | D3 | Treat empty FDC nutrient list as `MISSING`/error, not zero | B5 |
+-| **C8** | D4 | Append-only, hash-chained audit log; ms timestamps; no rewrite of prior entries | B5 |
+-| **C9** | D5 | Make the countermeasure gate non-trivially defeatable (tie to git identity/signed marker) | B5 |
++| **gsd:D1** | D3 | Treat empty FDC nutrient list as `MISSING`/error, not zero | B5 |
++| **gsd:A5** | D4 | Append-only, hash-chained audit log; ms timestamps; no rewrite of prior entries | B5 |
++| **gsd:C4** | D5 | Make the countermeasure gate non-trivially defeatable (tie to git identity/signed marker) | B5 |
+ | **C10** | D6 | Verify CoFID sha256 on every load, not just first download | B5 |
+ | **C11** | D7, D12 | Wrap each fetcher call in try/except; parse `Retry-After` defensively (fallback; HTTP-date) | B5 |
+ | **C12** | D8 | Commit before/atomically-with the swap, or treat failed commit as hard error → rollback; actually `raise GitError` | B5 |
+@@ -665,13 +665,13 @@
+ 
+ | Task | Repairs | Root Cause | Green Condition |
+ |---|---|---|---|
+-| **R1** | E16 | `assert result["solver_status"] in (…all enum values…)` is true by construction | Assert the **specific** expected status for a deterministic (seeded) selection; a perturbed expectation fails |
++| **gsd:A2** | E16 | `assert result["solver_status"] in (…all enum values…)` is true by construction | Assert the **specific** expected status for a deterministic (seeded) selection; a perturbed expectation fails |
+ | **R2** | E17 | `audit_test_result` computes `passed` then only writes to a committed `.md`; callers ignore the return; tests dirty the working tree | `assert passed` (or delete helper); logs go to `tmp_path`; a forced failure now fails the test; working tree stays clean |
+ | **R3** | E18, E5 | Lexicographic test checks stage-name metadata, not objective preservation; timeout test never calls the solver | Capture per-stage objective bounds and assert non-degradation within tolerance; force a real timeout (tiny `time_limit`/monkeypatched CBC `maxSeconds`) and assert a safe result object |
+ | **R4** | proof discipline | Fixes need reproducible, located, justified failure evidence | For a fixed fixture+seed the output contract is byte-identical across two runs; each P0/P1 fix has a minimal 2–3-ingredient regression fixture in `tests/fixtures/` |
+-| **R5** | A19, D22, A12 | Dead code (`GitError`-never-raised, `verify_backup`-never-called, unused `FDC_RATE_LIMIT_DELAY_S`, unreferenced `weighted_normalized_deviation`); `[DEBUG]` prints | Deletions land with `pytest`+`mypy` green and no remaining references; delete only after R1–R4 pin behavior |
+-
+-**Phase 3 sequence:** R1–R4 after the fixes they lock in; R5 last (dead-code deletion only after behavior is pinned by R1–R4).
++| **R5** | A19, D22, A12 | Dead code (`GitError`-never-raised, `verify_backup`-never-called, unused `FDC_RATE_LIMIT_DELAY_S`, unreferenced `weighted_normalized_deviation`); `[DEBUG]` prints | Deletions land with `pytest`+`mypy` green and no remaining references; delete only after gsd:A2–R4 pin behavior |
++
++**Phase 3 sequence:** gsd:A2–R4 after the fixes they lock in; R5 last (dead-code deletion only after behavior is pinned by gsd:A2–R4).
+ 
+ ---
+ 
+@@ -679,7 +679,7 @@
+ 
+ ### P1 Hardening (C-series — detailed in §7)
+ 
+-The 16 C-series tasks (C1–C16) address correctness hardening across the LP objective, solver-status taxonomy, dry-matter denominator, SUL verification, schema hardening, validation security (FDC key, empty responses, audit trail, countermeasure gate, CoFID checksum, fetch isolation, provenance atomicity), runtime input validation, CI gates, bug-numbering canonicalization, and dead-code removal. Each is P1 priority, small-to-medium estimate, with full Red/Green + Evidence Manifest.
++The 16 C-series tasks (gsd:A3–C16) address correctness hardening across the LP objective, solver-status taxonomy, dry-matter denominator, SUL verification, schema hardening, validation security (FDC key, empty responses, audit trail, countermeasure gate, CoFID checksum, fetch isolation, provenance atomicity), runtime input validation, CI gates, bug-numbering canonicalization, and dead-code removal. Each is P1 priority, small-to-medium estimate, with full Red/Green + Evidence Manifest.
+ 
+ ### P2/P3 Debt and Simplification (YAGNI-constrained; prefer deletion; each needs no-regression proof)
+ 
+@@ -712,35 +712,35 @@
+ B0 (safety freeze) ── independent; backstops everything
+ B7 (namespace) ──┬─> B1 (nutrient_results: clean min/max source)
+                  ├─> B5 (import: canonical units)
+-                 ├─> B6 (DB conformance: schema tightening) ─> C5 (schema hardening)
++                 ├─> B6 (DB conformance: schema tightening) ─> gsd:gsd:A3 (schema hardening)
+                  └─> B8 (lp_parameters schema)
+ B2a (harden antagonisms L1) ── G1 resolved (HARD); independent
+ B2b (severity-scaled rec)  ── Blocked by B2a (needs exposed slack); thresholds verify-first (G3) + vet
+ B3 (Ca/P ceilings) ── Blocked by G3 (verify values) + vet review
+ B4 (growth energy) ── Blocked by G3 (verify taper) + vet review
+-B5 (restore import) ── recommended after B7 (canonical units); URGENT (CI is red today). **Co-requisite: E24-fix** (AUDIT_DELTA NEW-1) — `pydantic` undeclared as runtime dep; in a clean venv `orchestrator.py:37`'s pydantic import fails BEFORE `orchestrator.py:54`'s `_shared.py` import, so B5's import DoD cannot pass without simultaneously fixing E24. E24-fix is delivered IN-BAND as B5 step 4 (declare `pydantic` in `pyproject.toml` + `requirements.txt`) and co-delivered by C14 (scope-expanded). B5 now inherits the full blocks-set {C7, C8, C9, C10, C11, C12, C14} for both D1 and E24.
++B5 (restore import) ── recommended after B7 (canonical units); URGENT (CI is red today). **Co-requisite: E24-fix** (AUDIT_DELTA NEW-1) — `pydantic` undeclared as runtime dep; in a clean venv `orchestrator.py:37`'s pydantic import fails BEFORE `orchestrator.py:54`'s `_shared.py` import, so B5's import DoD cannot pass without simultaneously fixing E24. E24-fix is delivered IN-BAND as B5 step 4 (declare `pydantic` in `pyproject.toml` + `requirements.txt`) and co-delivered by C14 (scope-expanded). B5 now inherits the full blocks-set {gsd:D1, gsd:A5, gsd:C4, C10, C11, C12, C14} for both D1 and E24.
+ B6 (schema gate) ── recommended after B7 (schema tightening)
+ B9 (objective source) ── G2 resolved (DELETE); independent
+ B10 (stage order) ── independent
+-B11 (diagnose L1 infeasibility) ── independent diagnostic; informs whether B4/C3 restore Level 1
+-E25 (mapa.py/tests import boundary) ── independent; AUDIT_DELTA NEW-3 (`F-PKG-3`, Medium/P2). `src/gsd/mapa.py:988` imports from `tests/`, which is excluded from any built distribution by `where=["src"]`. Not on critical path; can-start-now lane (same lane as B0/B2a/B9/B10/B11). Blocks only `mapa.py`'s `--gate-mapa` "Live Execution Evidence" section under non-editable/wheel install. Repaired by §9 P2/P3 debt item (not a formal B/C/R task). Adjacent-uncovered by C14 and E19 packaging debt — neither scopes the `src/` ⊥ `tests/` boundary in.
++gsd:B1 (diagnose L1 infeasibility) ── independent diagnostic; informs whether B4/gsd:C2 restore Level 1
++E25 (mapa.py/tests import boundary) ── independent; AUDIT_DELTA NEW-3 (`F-PKG-3`, Medium/P2). `src/gsd/mapa.py:988` imports from `tests/`, which is excluded from any built distribution by `where=["src"]`. Not on critical path; can-start-now lane (same lane as B0/B2a/B9/B10/gsd:B1). Blocks only `mapa.py`'s `--gate-mapa` "Live Execution Evidence" section under non-editable/wheel install. Repaired by §9 P2/P3 debt item (not a formal B/C/R task). Adjacent-uncovered by C14 and E19 packaging debt — neither scopes the `src/` ⊥ `tests/` boundary in.
+ B12 (arginine canonical + tracked) ── Blocked by B7 (registry/namespace) and B1 (reporting layer)
+-C1 (penalty normalization) ── Blocked by B2a
+-C2,C13,C15,C16 ── independent
+-C3 (dry matter) ── Blocked by moisture/ash data in DB
++gsd:A3 (penalty normalization) ── Blocked by B2a
++gsd:A2,C13,C15,C16 ── independent
++gsd:C2 (dry matter) ── Blocked by moisture/ash data in DB
+ C4 (SULs) ── Blocked by G3 + vet review
+-C5 (schema hardening) ── Blocked by B7, B8
++gsd:gsd:A3 (schema hardening) ── Blocked by B7, B8
+ C6 (FDC key) ── independent (security; do early)
+ C7-C12 (validation) ── Blocked by B5 (import)
+ C14 (CI gates) ── Blocked by B5 (import-smoke) + B6 (schema-gate)
+ R1-R5 (regression suite) ── after the fixes they lock in (R5 last)
+ ```
+ 
+-**Critical path:** G1/G2/G3 decisions → B7 → {B1, B5, B6, B8} → {B2a, C1}, {C5}, {C7–C12}, {C14} → Phase 3. B3/B4 run in parallel once G3 values + vet review land.
++**Critical path:** G1/G2/G3 decisions → B7 → {B1, B5, B6, B8} → {B2a, gsd:A3}, {gsd:gsd:A3}, {gsd:D1–C12}, {C14} → Phase 3. B3/B4 run in parallel once G3 values + vet review land.
+ 
+ **Highest-value safety chain (what actually protects the animal today, since Level 1 is unreachable):** B2a → B2b. This is the decisive protection — it makes the recommendation reflect the realized violation magnitude rather than just the cascade level.
+ 
+-**Recommended Phase-1 start order (independent, high-value, can begin now):** B0 (safety freeze) · B5 (restore import — unblocks CI) · B6 (schema gate) · B11 (Level-1 diagnosis) · B2a (harden antagonisms) · B9 (delete dead config) · B10 (fix stage order) — none blocked by G3/vet.
++**Recommended Phase-1 start order (independent, high-value, can begin now):** B0 (safety freeze) · B5 (restore import — unblocks CI) · B6 (schema gate) · gsd:B1 (Level-1 diagnosis) · B2a (harden antagonisms) · B9 (delete dead config) · B10 (fix stage order) — none blocked by G3/vet.
+ 
+ ---
+ 
+@@ -970,7 +970,7 @@
+ 
+ ## Bridge to Part 3
+ 
+-This document presents the complete remediation program: 14 P0 tasks (B0–B12), 16 P1 hardening tasks (C1–C16), 5 regression-suite tasks (R1–R5), and 15 P2/P3 debt items, all reconciled into a single canonical task system with an explicit dependency tree and a verification protocol that demands executable proof for every claim. The program is ready for implementation: all decision gates are resolved, the critical path is identified, and the safety freeze (B0) can land immediately to make the system honest while the deeper fixes proceed.
++This document presents the complete remediation program: 14 P0 tasks (B0–B12), 16 P1 hardening tasks (gsd:A3–C16), 5 regression-suite tasks (gsd:A2–R5), and 15 P2/P3 debt items, all reconciled into a single canonical task system with an explicit dependency tree and a verification protocol that demands executable proof for every claim. The program is ready for implementation: all decision gates are resolved, the critical path is identified, and the safety freeze (B0) can land immediately to make the system honest while the deeper fixes proceed.
+ 
+ Part 3 synthesizes the diagnosis (Part 1) and this remediation program into a single verified top-level view — the bottom-line verdict on where the project stands, what needs to happen first, and what the real bottleneck is.
+ 

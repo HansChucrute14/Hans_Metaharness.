@@ -1,0 +1,853 @@
+--- BUG-DEPENDENCY-MAP.md
++++ BUG-DEPENDENCY-MAP.md (canonicalized)
+@@ -3,9 +3,9 @@
+ **Role.** A standalone reference map of every software defect catalogued in Parts 1–3 of the consolidated documentation set, the tasks that repair them, the decision gates that govern the fixes, and the dependency relationships between all of the above. This is the navigational companion to the three-part reading arc: Part 1 is the diagnosis (what's broken), Part 2 is the treatment (how to fix it), Part 3 is the synthesis (the verified bottom line). This map is the graph view — it shows how the bugs relate to each other, which ones block which, and in what order they must be fixed.
+ 
+ **How to use this map.**
+-- **§A** is the complete bug catalog — 107 raw finding IDs across 5 subsystems (A/B/C/D/E) — was 105, +2 = E24/E25 per AUDIT_DELTA. Part 1 §9.2 aggressively deduplicates these to **79 unique findings** (was 77; +2 from AUDIT_DELTA — merging cross-referenced defects like A3/E1, A2/A14, B1/B11, C2/C3/C5/C7); the master priority table (§10.1) lists them as ~98 individual rows (was ~96; +2 = E24+E25 per AUDIT_DELTA). Organized by severity (P0 → P3), then cross-cutting concerns, integration points, systemic patterns, and probe numbers.
++- **§A** is the complete bug catalog — 107 raw finding IDs across 5 subsystems (A/B/C/D/E) — was 105, +2 = E24/E25 per AUDIT_DELTA. Part 1 §9.2 aggressively deduplicates these to **79 unique findings** (was 77; +2 from AUDIT_DELTA — merging cross-referenced defects like A3/gsd:A3, A2/gsd:A2, B1/gsd:B1, C2/C3/C5/gsd:D1); the master priority table (§10.1) lists them as ~98 individual rows (was ~96; +2 = E24+E25 per AUDIT_DELTA). Organized by severity (P0 → P3), then cross-cutting concerns, integration points, systemic patterns, and probe numbers.
+ - **§B** is the 3 decision gates (G1/G2/G3) plus the 10-point implementation-readiness checklist.
+-- **§C** is the complete fix-task catalog — **35 formal tasks** (B0–B12, C1–C16, R1–R5) across 4 phases, plus **12 P2/P3 debt items** not assigned formal task IDs (was 11; +1 = E25 per AUDIT_DELTA).
++- **§C** is the complete fix-task catalog — **35 formal tasks** (B0–B12, gsd:A3–C16, gsd:A2–R5) across 4 phases, plus **12 P2/P3 debt items** not assigned formal task IDs (was 11; +1 = E25 per AUDIT_DELTA).
+ - **§D** is the dependency graph (45 edges; was 44 — +1 = E24-fix co-requisite for B5 DoD per AUDIT_DELTA) with the critical chain highlighted.
+ - **§E** is the safety relationships — the verdict fusion, the three seams, the "contracts in name only" pattern, the B0 containment layer, and the decisive protection (B1 + B2b).
+ - **§F** is the execution order — 4 phases, with the critical chain and the G3-parallel lane.
+@@ -25,19 +25,19 @@
+ | Token | Meaning 1 | Meaning 2 | Meaning 3 |
+ |---|---|---|---|
+ | **C4** | Finding C4 (DATA-F4, Critical P0): `lp_parameters.schema.json` orphaned — validates no real file | Task C4 (P1, SUL verification for Cu/Fe/I/Mn/Zn, blocked by G3+vet) | — |
+-| **C7** | Finding C7 (DATA-F7, High P1): unit not bound to nutrient key | Task C7 (D3 empty-200 validation fix) | — |
++| **gsd:D1** | Finding gsd:D1 (DATA-F7, High P1): unit not bound to nutrient key | Task gsd:D1 (D3 empty-200 validation fix) | — |
+ | **C16** | Finding C16 (DATA-F16, Medium P2): mojibake in 17/28 display names | Task C16 (dead floor-relaxation doc + file-handle leak) | — |
+-| **R1** | Governance review R1 (= A2 antagonism slack) | Regression task R1 (tautological assertions) | Legacy REVIEW.md R-01 (= A2) |
+-
+-The finding-vs-task distinction is determined by context. When a row in §C says "C7 repairs D3," C7 is the **task**. When §A.2 lists "C7" among findings, C7 is the **finding**.
+-
+-**AUDIT_DELTA note (E24/E25 — no new namespace collisions):** The two new finding IDs **E24** (pydantic undeclared, F-PKG-2) and **E25** (`mapa.py` `tests/` import, F-PKG-3) are **finding-only IDs — no task collision**. E24-fix is scope-expanded into B5 + C14 (no new task ID); E25-fix is added as §C.5 debt item #12 (no task ID). The 4 existing namespace collisions (C4/C7/C16/R1) are unchanged.
++| **gsd:A2** | Governance review gsd:A2 (= A2 antagonism slack) | Regression task gsd:A2 (tautological assertions) | Legacy REVIEW.md R-01 (= A2) |
++
++The finding-vs-task distinction is determined by context. When a row in §C says "gsd:D1 repairs D3," gsd:D1 is the **task**. When §A.2 lists "gsd:D1" among findings, gsd:D1 is the **finding**.
++
++**AUDIT_DELTA note (E24/E25 — no new namespace collisions):** The two new finding IDs **E24** (pydantic undeclared, F-PKG-2) and **E25** (`mapa.py` `tests/` import, F-PKG-3) are **finding-only IDs — no task collision**. E24-fix is scope-expanded into B5 + C14 (no new task ID); E25-fix is added as §C.5 debt item #12 (no task ID). The 4 existing namespace collisions (C4/C7/C16/gsd:A2) are unchanged.
+ 
+ ---
+ 
+ ## §A. The Bug Catalog — 107 raw findings, 5 subsystems, 79 deduplicated (Part 1 §9.2; +2 raw / +2 dedup = E24+E25 per AUDIT_DELTA)
+ 
+-The 107 raw finding IDs organize into 5 subsystems (the A/B/C/D/E series). Part 1 uses a dual-namespace: each finding has both a subsystem-letter ID (A1–A20, B1–B18, C1–C22, D1–D22, E1–E25) **and** a machine tag (`LP-F*`, `NUTR-F*`, `DATA-F*`, `VAL-F*`, `F-CONTRACT-*`, `F-ARCH-*`, `F-TEST-*`, `F-CLI-*`, `F-CII-*`, `F-DOC-*`, `F-TYPE-*`, **`F-PKG-*`** [AUDIT_DELTA — added for E24/E25 packaging defects]).
++The 107 raw finding IDs organize into 5 subsystems (the A/B/C/D/E series). Part 1 uses a dual-namespace: each finding has both a subsystem-letter ID (A1–A20, B1–B18, gsd:A3–C22, D1–D22, gsd:A3–E25) **and** a machine tag (`LP-F*`, `NUTR-F*`, `DATA-F*`, `VAL-F*`, `F-CONTRACT-*`, `F-ARCH-*`, `F-TEST-*`, `F-CLI-*`, `F-CII-*`, `F-DOC-*`, `F-TYPE-*`, **`F-PKG-*`** [AUDIT_DELTA — added for E24/E25 packaging defects]).
+ 
+ **Severity → priority mapping** (base case): Critical → P0, High → P1, Medium → P2, Low → P3.
+ 
+@@ -50,12 +50,12 @@
+ 
+ | # | ID(s) | Machine tag(s) | Subsystem | The bug | Why it's Critical |
+ |---|---|---|---|---|---|
+-| 1 | **A2** / **A14** / R1 / R-01 | LP-F2 / LP-F14 | LP solver | 5 mineral-antagonism constraints (Ca:P, Zn:Cu, Fe:Zn, Ca:Mg, Lys:Arg) declared `HARD_FAIL_INFEASIBLE` but implemented with slack — soft at every cascade level. A14 is the L2/L3 half (unbounded + unpenalized). | Diet that violates ratios can be returned `SAFE_TO_FEED`. The `HARD_FAIL_INFEASIBLE` flag appears 60 times in `constraints.json` (5 antagonism + 55 nutrient minimums/limits); all 5 antagonisms are silently soft. |
+-| 2 | **A3** / **E1** / **E2** / R4 / R-09 | LP-F5 / F-CONTRACT-1 / F-TEST-2 | Output contract + tests | `nutrient_results` hardcoded `"adequate"` with `pct_of_min: None` for every nutrient, regardless of solver output (**A3/E1**). No test verifies `nutrient_results` correctness — only `len >= 41` is asserted (**E2**). | User cannot see any defect — the report lies, and no test catches the lie. |
++| 1 | **A2** / **gsd:A2** / gsd:A2 / R-01 | LP-F2 / LP-F14 | LP solver | 5 mineral-antagonism constraints (Ca:P, Zn:Cu, Fe:Zn, Ca:Mg, Lys:Arg) declared `HARD_FAIL_INFEASIBLE` but implemented with slack — soft at every cascade level. gsd:A2 is the L2/L3 half (unbounded + unpenalized). | Diet that violates ratios can be returned `SAFE_TO_FEED`. The `HARD_FAIL_INFEASIBLE` flag appears 60 times in `constraints.json` (5 antagonism + 55 nutrient minimums/limits); all 5 antagonisms are silently soft. |
++| 2 | **A3** / **gsd:A3** / **gsd:A3** / R4 / R-09 | LP-F5 / F-CONTRACT-1 / F-TEST-2 | Output contract + tests | `nutrient_results` hardcoded `"adequate"` with `pct_of_min: None` for every nutrient, regardless of solver output (**A3/gsd:A3**). No test verifies `nutrient_results` correctness — only `len >= 41` is asserted (**gsd:A3**). | User cannot see any defect — the report lies, and no test catches the lie. |
+ | 3 | **B2** | NUTR-F3 | Nutrition | No absolute calcium maximum; only ratio constraints (Ca:P 1.1–1.3, Ca:Mg 12–18). AAFCO LBG ceiling (~4.5 g/1000 kcal) missing. | Ca + P scale together past safe ceiling → developmental orthopedic disease in large-breed puppies. |
+-| 4 | **B1** / **B11** | NUTR-F1 / NUTR-F2 | Nutrition | Flat `k=1.2×RER` growth energy (no age taper); scenario labels inverted (`rapid_growth_discouraged`=2.0 is steered away from; `slow_growth_recommended`=1.2 is default). | Puppies underfed ~40–60%. |
+-| 5 | **C1** | DATA-F1 | Data/CI | `DB_ingredientes.json` fails its own schema (21 errors: 20 measured entries missing `unit`; 1 `note` 208 > maxLength 200); no CI gate catches it. | LP can ingest 1000×-off mineral value silently — silent-poisoning vector. |
+-| 6 | **C2** / **C3** / **C5** / **C7** | DATA-F2/F3/F5/F7 | Data/Schema | No canonical nutrient namespace; 3 competing schemes (DB `_mg`/`_ug`, solver `_g`, drift unit-less); duplicate conflicting units (`chicken_blood_raw` Mg 20.5 vs 5.0 mg); unit not bound to key (`chloride_mg` with `unit:"g"` passes). | Typos silently match wrong nutrients. Zero overlap in key naming across the 3 schemes. |
++| 4 | **B1** / **gsd:B1** | NUTR-F1 / NUTR-F2 | Nutrition | Flat `k=1.2×RER` growth energy (no age taper); scenario labels inverted (`rapid_growth_discouraged`=2.0 is steered away from; `slow_growth_recommended`=1.2 is default). | Puppies underfed ~40–60%. |
++| 5 | **gsd:A3** | DATA-F1 | Data/CI | `DB_ingredientes.json` fails its own schema (21 errors: 20 measured entries missing `unit`; 1 `note` 208 > maxLength 200); no CI gate catches it. | LP can ingest 1000×-off mineral value silently — silent-poisoning vector. |
++| 6 | **gsd:A2** / **gsd:C2** / **gsd:gsd:A3** / **gsd:D1** | DATA-F2/F3/F5/F7 | Data/Schema | No canonical nutrient namespace; 3 competing schemes (DB `_mg`/`_ug`, solver `_g`, drift unit-less); duplicate conflicting units (`chicken_blood_raw` Mg 20.5 vs 5.0 mg); unit not bound to key (`chloride_mg` with `unit:"g"` passes). | Typos silently match wrong nutrients. Zero overlap in key naming across the 3 schemes. |
+ | 7 | **C4** | DATA-F4 | Schema | `lp_parameters.schema.json` (44 KB) orphaned — validates no real file; describes obsolete `breed`/`domains` shape; actual config (`NUTRIENT_REGISTRY`/`solve_cascade`) fails 3 errors. | 44 KB dead artifact; real config unchecked. |
+ | 8a | **E24** *(AUDIT_DELTA / NEW-1)* | F-PKG-2 | Packaging/import | `pydantic` imported at runtime (`schemas.py:10`) but never declared in `pyproject.toml` / `requirements.txt` / CI install line. `types-pydantic` (stub-only) listed; real `pydantic` absent. | **Upstream of D1, not parallel.** `orchestrator.py:37` (`from ..schemas import (...)` [pydantic]) fires BEFORE `orchestrator.py:54` (D1) — in a clean `pip install -e ".[test]"` venv, line 37 fails first and D1 is never reached to be diagnosed. **B5's DoD still fails post-B5 until E24 ships too.** Independently satisfies B0 trip-condition-5 (accidentally). **C14 scope gap:** "remove dead `types-pydantic`" never adds real `pydantic` — fixed by scope-expanding B5 + C14 (no new task ID). |
+ | 8 | **D1** | VAL-F1 | Validation | `validators/_shared.py` missing → entire validation package `ModuleNotFoundError`. 4 importers cannot import. | **CI is RED today** — breaks pytest *collection* (`collected 150 items / 3 errors` in phase1/phase5/phase6, `Interrupted: 3 errors during collection`, no test runs in a clean `pip install -e ".[test]"` env). **AUDIT_DELTA / NEW-2 correction:** the earlier "191 tests collected, 1 error in 1.96s" transcript was captured with `pydantic` pre-installed in the review sandbox and masked **E24**. Verdict unchanged — D1 still real, B5 still right, CI still RED. Blocks all verification (Part 3 §9 escalation). |
+@@ -73,7 +73,7 @@
+ | **A4** | LP-F3 | Antagonism penalty unit mismatch: raw g/mg slack × 5000–7000 dominates dimensionless normalized objective by ~500×. |
+ | **A6** / R5-mechanism | LP-F6 | `solver_status`/`feeding_recommendation` purely config-driven (which level solved), never conditioned on realized slack magnitude. No path to escalate on realized violations. |
+ | **A7** | LP-F7 | Documented clinical-floor relaxation fallback (`clinical_floor_relaxed`) never set; `validate_output` assertion #9 is dead code. |
+-| **A8** / **E3** | LP-F8 / F-CONTRACT-2 | All non-`Optimal` CBC statuses collapse to `"infeasible"`; fails closed but conflates Unbounded/Undefined/timeout. |
++| **A8** / **gsd:A8** | LP-F8 / F-CONTRACT-2 | All non-`Optimal` CBC statuses collapse to `"infeasible"`; fails closed but conflates Unbounded/Undefined/timeout. |
+ 
+ #### A.2.b Nutrition SUL cluster (8 findings, all "verify")
+ 
+@@ -93,8 +93,8 @@
+ | ID | Machine tag | The bug |
+ |---|---|---|
+ | **C6** | DATA-F6 | No numeric bounds on any nutrient value; negative values and `1e9` pass validation. |
+-| **C8** | DATA-F8 | `additionalProperties: false` missing on 7 object types → silent typo'd keys. |
+-| **C9** | DATA-F9 | UTF-8 BOM makes 2 files unloadable by strict parsers (`nutrient_set_minimal.json`, `nutrient_safety.schema.json`). |
++| **gsd:A5** | DATA-F8 | `additionalProperties: false` missing on 7 object types → silent typo'd keys. |
++| **gsd:C4** | DATA-F9 | UTF-8 BOM makes 2 files unloadable by strict parsers (`nutrient_set_minimal.json`, `nutrient_safety.schema.json`). |
+ | **C10** | DATA-F10 | DB↔registry FDC-id referential integrity broken (18 DB `source_ref`s not in registry; 12 registry IDs never cited; `beef_muscle` 170196 vs 169483). |
+ | **C11** | DATA-F11 | `lp_constraints` has no upper bound and no `min ≤ max` invariant. |
+ | **C12** | DATA-F12 | Identity rules inconsistent across schemas (`ingredient_id` pattern + FDC-id type). |
+@@ -119,13 +119,13 @@
+ | **E4** | F-CONTRACT-3 | `--runtime` input unvalidated ad-hoc dict; `AnimalInput(**dict)` constructed directly from `runtime_request.json`. |
+ | **E5** | F-TEST-1 | `test_solver_timeout_returns_result` is a stub that never runs solver; passes unconditionally. |
+ | **E6** | F-CII-1 | CI does not run schema/MAPA gates README advertises; single Python 3.12 (no matrix vs `requires-python>=3.10`); dead `types-pydantic` dep. |
+-| **E7** | F-DOC-1 | Three mutually inconsistent bug-numbering schemes (`R-01..R-09` in REVIEW.md, `R-01/R1..R-06/R7` in README/amendment, `F1..F6`/`D1..D2` amendment list). |
++| **E7** | F-DOC-1 | Three mutually inconsistent bug-numbering schemes (`R-01..R-09` in REVIEW.md, `R-01/gsd:A2..R-06/R7` in README/amendment, `F1..F6`/`D1..D2` amendment list). |
+ 
+ **P1 total: 4 + 8 + 7 + 7 + 4 = 30 findings.** ✓ matches Part 1 §10.1.
+ 
+ ### A.3 The Medium / P2 bugs (43 findings per master table post-AUDIT_DELTA; was 42, +1 = E25; Part 1 §9.2 dedup count = 30)
+ 
+-#### A.3.a LP numerical-robustness (A9–A18, 10 findings; A14 counted in P0 above, A19/A20 are P3)
++#### A.3.a LP numerical-robustness (A9–A18, 10 findings; gsd:A2 counted in P0 above, A19/A20 are P3)
+ 
+ | ID | Machine tag | The bug |
+ |---|---|---|
+@@ -226,8 +226,8 @@
+ | 2 | Category Goals | `solver.py:_build_stage_objective` | Lexicographic cascade | A1 (stage order), A6 |
+ | 3 | Clinical Criticality | `solver.py:16` (`CRITICALITY_WEIGHT`) | Objective weighting | A5 (objective_weights dead) |
+ | 4 | 3-State Nutrient Contract | `DB_ingredientes.json` → `nutrition.py` → `solver.py` → output | Data integrity chain | C13, A3 |
+-| 5 | Constraint Tier | `constraints.json` (`HARD_FAIL_INFEASIBLE` / soft) | All cascade levels | A2/A14 |
+-| 6 | Unit Rename System | `nutrition.py` (DB `_mg`/`_ug` → solver `_g`) | build_matrix | C2/C3/C7, B4 |
++| 5 | Constraint Tier | `constraints.json` (`HARD_FAIL_INFEASIBLE` / soft) | All cascade levels | A2/gsd:A2 |
++| 6 | Unit Rename System | `nutrition.py` (DB `_mg`/`_ug` → solver `_g`) | build_matrix | C2/C3/gsd:D1, B4 |
+ | 7 | State Marker | `compute_state_marker()` | Validation provenance | D1, D4 |
+ | 8 | Circuit Breaker | `orchestrator.py` | Validation pipeline | D5 |
+ | 9 | MAPA Sentinel System | `mapa.py`, `doc_introspector.py` | Doc generation | E11 |
+@@ -236,11 +236,11 @@
+ 
+ | # | Integration point | Provider → Consumers | Contract | Violated by |
+ |---|---|---|---|---|
+-| 1 | `load_all_jsons()` | core.py → solver, validation | All JSON loads succeed | C1 (schema), C9 (BOM) |
++| 1 | `load_all_jsons()` | core.py → solver, validation | All JSON loads succeed | gsd:A3 (schema), gsd:C4 (BOM) |
+ | 2 | `build_matrix()` | nutrition.py → solver | Nutrient matrix with correct units + bio factors | A12/C21 (bio dead), B4 (DM) |
+ | 3 | `solve_cascade()` | solver.py → output | Lexicographic 3-level solve | A1 (order), A2 (antagonism soft) |
+ | 4 | `CrossRefIndex` | doc_introspector.py → MAPA | Cross-reference integrity | E11 (false "NOT IMPLEMENTED") |
+-| 5 | `validate_ingredients_against_schema()` | validation → CI | Schema gate | C1, E6 (no CI gate) |
++| 5 | `validate_ingredients_against_schema()` | validation → CI | Schema gate | gsd:A3, E6 (no CI gate) |
+ | 6 | `compute_state_marker()` | validation → audit | Provenance marker | D1 (import broken) |
+ | 7 | `check_structure_contracts()` | solver → output | Structural assertions | A13 (rounding), A11 (bio) |
+ | 8 | `ImplIntrospector.check()` | mapa → docs | Implementation claims | E11 (false claims) |
+@@ -253,18 +253,18 @@
+ 
+ | # | Pattern | Instance findings |
+ |---|---|---|
+-| 1 | **Contracts that exist in name only** | A3, A2, C4, C1 (unified in Part 3 §3.1 — see §E.3) |
+-| 2 | **No single source of truth for nutrients** | B18, C2, C3, C5, C7 (3 competing schemes, zero overlap) |
++| 1 | **Contracts that exist in name only** | A3, A2, C4, gsd:A3 (unified in Part 3 §3.1 — see §E.3) |
++| 2 | **No single source of truth for nutrients** | B18, gsd:A2, gsd:C2, gsd:gsd:A3, gsd:D1 (3 competing schemes, zero overlap) |
+ | 3 | **Level 1 structurally unreachable in practice** | B-i (amendment, Part 3 §7) — forces B2b as decisive protection |
+ | 4 | **Documentation outpaces reality** | A5, C4, E11, E7, E22, E20, E6 (objective_weights, orphaned schema, MAPA, numbering, README, CLI branding, CI) |
+-| 5 | **Fail-closed is good; fail-honest is missing** | A8/E3, A3 (fails closed but lies about the result) |
++| 5 | **Fail-closed is good; fail-honest is missing** | A8/gsd:A8, A3 (fails closed but lies about the result) |
+ | 6 | **Strong foundations, weak seams** | All findings — the LP core is verified correct; defects are in wiring/data/output/validation/import-packaging seams. **E24** (undeclared `pydantic` — `schemas.py:10`) and **E25** (`mapa.py:988` imports from `tests/`) extend this pattern to the import/packaging seam (AUDIT_DELTA). |
+ 
+ ### A.8 Structural-vs-surgical split (Part 1 §9.3)
+ 
+ Part 1 explicitly distinguishes **structural defects** (need design principles, multi-layer fixes in order) from **surgical defects** (localized fixes):
+ 
+-**Structural (20 findings, or 19 if A3/E1 merged per Part 1 dedup):** A2, A3, A5, A12, B1, B2, C1, C2, C3, C5, C7, C4, C13, D1, D8, E1, E2, E6, E7, **E24** (AUDIT_DELTA — packaging/import-boundary sibling of D1; co-blocks B5's DoD).
++**Structural (20 findings, or 19 if A3/gsd:A3 merged per Part 1 dedup):** A2, A3, A5, A12, B1, B2, gsd:A3, gsd:A2, gsd:C2, gsd:gsd:A3, gsd:D1, C4, C13, D1, D8, gsd:A3, gsd:A3, E6, E7, **E24** (AUDIT_DELTA — packaging/import-boundary sibling of D1; co-blocks B5's DoD).
+ 
+ **Surgical (the rest):** everything not in the structural list. **E25** (AUDIT_DELTA — `mapa.py:988` tests/ import) stays surgical: localized fix (move `reference_cases` into `src/gsd/` OR graceful-skip on `ImportError`), no multi-layer coordination required.
+ 
+@@ -307,7 +307,7 @@
+ | **G2** (= task **B9**) | `objective_weights.json`: wire in or delete? | **DELETE** (0 solver refs — `grep -c objective_weights src/gsd/solver.py` → 0; `CRITICALITY_WEIGHT` at `solver.py:17` is authoritative). | ✅ Resolved | Unblocks B9 (= G2) | Part 3 §2, §7 |
+ | **G3** | Numeric safety values (Ca/P ceilings, growth taper, SULs, severity thresholds) | **Verify-first against AAFCO 2024 / NRC 2006 / FEDIAF 2024 primary sources + board-certified veterinary nutritionist (DACVN or ECVCN) review before merge.** | ❌ **PENDING** — the only non-engineering gate; the single project bottleneck | Blocks **B3, B4, B2b-thresholds** | Part 3 §2, §6 |
+ 
+-**G3 disambiguation (C4 finding vs C4 task):** G3 does NOT block the fix for **FINDING C4** (orphaned `lp_parameters.schema.json`, repaired by tasks C5/C9 per Part 3 §5.4 — that fix is G3-independent). G3 DOES block **TASK C4** (SUL verification for Cu/Fe/I/Mn/Zn, per Part 2 §4/§10 — that task requires vet-verified numeric values). See §A.0 for the C4 namespace collision.
++**G3 disambiguation (C4 finding vs C4 task):** G3 does NOT block the fix for **FINDING C4** (orphaned `lp_parameters.schema.json`, repaired by tasks C5/gsd:C4 per Part 3 §5.4 — that fix is G3-independent). G3 DOES block **TASK C4** (SUL verification for Cu/Fe/I/Mn/Zn, per Part 2 §4/§10 — that task requires vet-verified numeric values). See §A.0 for the C4 namespace collision.
+ 
+ **G3 sub-steps** (Part 3 §6):
+ 1. Primary-source lookup (AAFCO 2024 dog food nutrient profiles, NRC 2006, FEDIAF 2024)
+@@ -341,46 +341,46 @@
+ 
+ | Task | Repairs | Blocked by | Description |
+ |---|---|---|---|
+-| **B0** | A3, A2, B2, C1, D1 (interim containment for all 5) | none — first commit | Add `safety_guard.py` with 5 pure checks → forces `DO_NOT_FEED` + `feed_safe=false` + visible banner. A **guard, not a fix** — re-detects each original defect until the real fix lands. Fully deletable once P0-1 through P0-6 land + vet signs off. |
++| **B0** | A3, A2, B2, gsd:A3, D1 (interim containment for all 5) | none — first commit | Add `safety_guard.py` with 5 pure checks → forces `DO_NOT_FEED` + `feed_safe=false` + visible banner. A **guard, not a fix** — re-detects each original defect until the real fix lands. Fully deletable once P0-1 through P0-6 land + vet signs off. |
+ 
+ **B0's 5 trip conditions** (Part 2 §5 — *not* Part 3 §1 as a prior version cited):
+ 1. Any `nutrient_results[i].status == "adequate"` while `pct_of_min is None` → detects **A3**
+ 2. Any antagonism slack > tolerance → detects **A2** (and B2a's prerequisite)
+ 3. No absolute Ca max in config → detects **B2** (for growth scenarios)
+-4. DB fails schema → detects **C1** (and B6's prerequisite)
++4. DB fails schema → detects **gsd:A3** (and B6's prerequisite)
+ 5. Validation package import fails → detects **D1** (and B5's prerequisite). **AUDIT_DELTA / NEW-1 note:** also accidentally detects **E24** (undeclared `pydantic`) — `orchestrator.py:37` (`from ..schemas import (...)` [pydantic]) fires BEFORE `orchestrator.py:54` (D1) in a clean `pip install -e ".[test]"` venv, so B0 trip-5 catches both the D1 import-smoke failure AND the E24 undeclared-pydantic failure with the same import attempt. **B5's DoD does NOT clear until E24 ships too** (E24-fix is scope-expanded into B5 + C14; no new task ID).
+ 
+ ### C.2 Phase 1 — Blockers & Stability (13 P0 tasks)
+ 
+ | Task | Repairs | Blocked by | Blocks | Description |
+ |---|---|---|---|---|
+-| **B1** | A3, E1, E2 | B7 *(master table)* / none *(detailed def — "pairs with B7")* — internal Part 2 inconsistency | B12 (reporting layer) | Replace hardcoded `status:"adequate"` placeholder with real computation of value/target_min/target_max/pct_of_min/pct_of_sul/status. Absent nutrients → "unknown", never 0/adequate. Strengthen `validate_output`. DoD: `pytest tests/test_nutrient_results.py -v` → 3 passed. **Safety-chain task (Part 3 §5.2).** |
+-| **B2a** | A2, A14 | none (G1 resolved) | C1, B2b (needs exposed slack) | Branch on `HARD_FAIL_INFEASIBLE` to add ratio bound with NO slack at Level 1. Levels 2/3 keep slack but penalize (normalized — C1) and record `antagonism_slack`. DoD: `pytest tests/test_antagonism_hard.py -v` → 1 passed. |
++| **B1** | A3, gsd:A3, gsd:A3 | B7 *(master table)* / none *(detailed def — "pairs with B7")* — internal Part 2 inconsistency | B12 (reporting layer) | Replace hardcoded `status:"adequate"` placeholder with real computation of value/target_min/target_max/pct_of_min/pct_of_sul/status. Absent nutrients → "unknown", never 0/adequate. Strengthen `validate_output`. DoD: `pytest tests/test_nutrient_results.py -v` → 3 passed. **Safety-chain task (Part 3 §5.2).** |
++| **B2a** | A2, gsd:A2 | none (G1 resolved) | gsd:A3, B2b (needs exposed slack) | Branch on `HARD_FAIL_INFEASIBLE` to add ratio bound with NO slack at Level 1. Levels 2/3 keep slack but penalize (normalized — gsd:A3) and record `antagonism_slack`. DoD: `pytest tests/test_antagonism_hard.py -v` → 1 passed. |
+ | **B2b** | A6, B-i, B-ii | B2a + G3 thresholds + vet | (none — terminal safety task) | Replace level-only `feeding_map` with severity function based on realized violation magnitudes (Ca:P outside [0.5,1.8], Ca:Mg outside [~6,~24], any SUL exceeded ⇒ DO_NOT_FEED). Emit `violations[]` array. **Mechanism can ship now with placeholder thresholds; thresholds wait on G3.** **THE decisive protection (Part 3 §3.3, §5.2) — not B2a.** DoD: `pytest tests/test_recommendation_severity.py -v` → 2 passed. |
+ | **B3** | B2, B3 | **G3 + vet** | (none) | Add Ca and P as `HARD_INEQUALITY_MAX` entries in `toxicological_limits.json` (Ca ≈ 4.5 g/1000 kcal per AAFCO LBG ~1.8% DM). DoD: `pytest tests/test_ca_p_ceiling.py -v` → 1 passed. |
+-| **B4** | B1, B5, B11 | **G3 + vet** | (none) | Add `growth_energy_schedule` (age/weight-band → k); replace `SCENARIO_K_MAP` lookup; relabel `scenarios.json`. DoD: `pytest tests/test_growth_energy.py -v` → 1 passed. **B11 should run before B4 ships.** |
+-| **B5** | D1, **E24** *(scope-expanded per AUDIT_DELTA / NEW-1)* | B7 *(recommended, not hard)* — **URGENT: CI is RED today** | C7, C8, C9, C10, C11, C12, C14 (all 7 depend on B5 for import-smoke); **E24-fix is co-required for B5's DoD** | Create `validators/_shared.py` implementing `extract_db_value` honoring 3-state contract; add `tests/test_imports.py` + CI import-smoke step. **E24-fix sub-step (AUDIT_DELTA): add real `pydantic` to `pyproject.toml`/`requirements.txt`/CI install line; remove dead `types-pydantic` stub.** `orchestrator.py:37` (`schemas`/pydantic) fires BEFORE `orchestrator.py:54` (D1) in a clean env, so B5's DoD `import gsd.validation.pipeline.orchestrator` → `OK` **still fails post-B5 until E24 ships too**. DoD: `PYTHONPATH=src python -c "import gsd.validation.pipeline.orchestrator; print('OK')"` → `OK` (must be from a clean `pip install -e ".[test]"` env — NOT a review sandbox with `pydantic` pre-installed, which masked E24 per NEW-2). **The single most important next action (Part 3 §12). Hidden critical-path accelerator — implicitly blocks verification of B6, B1, B2a.** |
+-| **B6** | C1, C9, C13 | B7 *(recommended, ideally sequenced first)* | C5 (recommended), C14 (blocks) | Add `unit` to 20 measured entries; trim over-long `note`; strip BOM; enforce 3-state contract; add CI `schema-gate` job. DoD: `--validate-db` → `ERROR COUNT: 0`. |
+-| **B7** | C2, C3, C5, C7, B18, C6 | `chicken_blood_raw` Mg source value (verify FDC — external, not a task) | B1, B5, B6, B8, B12, C5 (all recommended/blocks) | Promote `NUTRIENT_REGISTRY` to single canonical registry; `propertyNames:{enum:[...43 keys...]}` + `required` + `additionalProperties:false`; bind unit to key suffix; dedupe DB; resolve Mg conflict. **The single most architecturally meaningful task (Part 3 §3.2).** DoD: `pytest tests/test_namespace.py -v` → 4 passed. |
+-| **B8** | C4, C11 | B7 | C5 | Rewrite `lp_parameters.schema.json` to match real top-level keys, or split into `nutrient_registry.schema.json` + `solve_cascade.schema.json`; add upper bounds + `min≤max` invariant. DoD: jsonschema validate → `ERROR COUNT: 0`. *(Note: Part 3 never mentions B8 — it attributes C4 fix to C5/C9. This map retains B8 per Part 2.)* |
++| **B4** | B1, B5, gsd:B1 | **G3 + vet** | (none) | Add `growth_energy_schedule` (age/weight-band → k); replace `SCENARIO_K_MAP` lookup; relabel `scenarios.json`. DoD: `pytest tests/test_growth_energy.py -v` → 1 passed. **gsd:B1 should run before B4 ships.** |
++| **B5** | D1, **E24** *(scope-expanded per AUDIT_DELTA / NEW-1)* | B7 *(recommended, not hard)* — **URGENT: CI is RED today** | gsd:D1, gsd:A5, gsd:C4, C10, C11, C12, C14 (all 7 depend on B5 for import-smoke); **E24-fix is co-required for B5's DoD** | Create `validators/_shared.py` implementing `extract_db_value` honoring 3-state contract; add `tests/test_imports.py` + CI import-smoke step. **E24-fix sub-step (AUDIT_DELTA): add real `pydantic` to `pyproject.toml`/`requirements.txt`/CI install line; remove dead `types-pydantic` stub.** `orchestrator.py:37` (`schemas`/pydantic) fires BEFORE `orchestrator.py:54` (D1) in a clean env, so B5's DoD `import gsd.validation.pipeline.orchestrator` → `OK` **still fails post-B5 until E24 ships too**. DoD: `PYTHONPATH=src python -c "import gsd.validation.pipeline.orchestrator; print('OK')"` → `OK` (must be from a clean `pip install -e ".[test]"` env — NOT a review sandbox with `pydantic` pre-installed, which masked E24 per NEW-2). **The single most important next action (Part 3 §12). Hidden critical-path accelerator — implicitly blocks verification of B6, B1, B2a.** |
++| **B6** | gsd:A3, gsd:C4, C13 | B7 *(recommended, ideally sequenced first)* | gsd:gsd:A3 (recommended), C14 (blocks) | Add `unit` to 20 measured entries; trim over-long `note`; strip BOM; enforce 3-state contract; add CI `schema-gate` job. DoD: `--validate-db` → `ERROR COUNT: 0`. |
++| **B7** | gsd:A2, gsd:C2, gsd:gsd:A3, gsd:D1, B18, C6 | `chicken_blood_raw` Mg source value (verify FDC — external, not a task) | B1, B5, B6, B8, B12, gsd:gsd:A3 (all recommended/blocks) | Promote `NUTRIENT_REGISTRY` to single canonical registry; `propertyNames:{enum:[...43 keys...]}` + `required` + `additionalProperties:false`; bind unit to key suffix; dedupe DB; resolve Mg conflict. **The single most architecturally meaningful task (Part 3 §3.2).** DoD: `pytest tests/test_namespace.py -v` → 4 passed. |
++| **B8** | C4, C11 | B7 | gsd:gsd:A3 | Rewrite `lp_parameters.schema.json` to match real top-level keys, or split into `nutrient_registry.schema.json` + `solve_cascade.schema.json`; add upper bounds + `min≤max` invariant. DoD: jsonschema validate → `ERROR COUNT: 0`. *(Note: Part 3 never mentions B8 — it attributes C4 fix to C5/gsd:C4. This map retains B8 per Part 2.)* |
+ | **B9** (= **G2**) | A5 | none (G2 resolved) | (none) | Delete `data/objective_weights.json` + its loaders (`core.py:60/419`, `mapa.py:530/533/1270`, `doc_introspector.py:703`); document real objective. DoD: `grep -rc objective_weights src/ data/` → `0`. |
+ | **B10** | A1 | none | (none) | Reorder `solve_cascade` `objective_stages` so free tie-break/category stage is LAST; add build-time assertion. DoD: `pytest tests/test_lexicographic_order.py -v` → 2 passed. *(Note: Part 3 never mentions B10 — retained per Part 2.)* |
+-| **B11** | B-i, B-iii (Level-1 unreachable — new empirical finding) | none (diagnostic) | Informs B3, B4 (should run before they ship) | Build Level-1 LP; add slack to all Level-1 constraints; minimize total slack; inspect which slacks are non-zero; binary-search by constraint group; record IIS. Do NOT change bounds. **"The largest open structural unknown in the project" (Part 3 §3.3).** DoD: diagnosis names ≥1 blocking constraint. |
++| **gsd:B1** | B-i, B-iii (Level-1 unreachable — new empirical finding) | none (diagnostic) | Informs B3, B4 (should run before they ship) | Build Level-1 LP; add slack to all Level-1 constraints; minimize total slack; inspect which slacks are non-zero; binary-search by constraint group; record IIS. Do NOT change bounds. **"The largest open structural unknown in the project" (Part 3 §3.3).** DoD: diagnosis names ≥1 blocking constraint. |
+ | **B12** | B-iv (reframed — Part 3 §8) | B7 + B1 *(master table says B7 only; detailed def says B7+B1 — internal Part 2 inconsistency)* | (none) | **REFRAMED:** "confirm B1 fixes arginine display," NOT "relocate arginine key." Arginine already correctly placed in all 28 ingredients, in `NUTRIENT_REGISTRY` line 20, AAFCO min ≥2.5, `build_matrix` carries it (beef→6.86, chicken→11.94), Lys:Arg constraint built correctly. Only A3 reporting layer is broken. DoD: `pytest tests/test_arginine_tracked.py -v` → 1 passed. |
+ 
+ ### C.3 Phase 2 — P1 Hardening (16 C-series tasks)
+ 
+ | Task | Repairs | Blocked by | Description |
+ |---|---|---|---|
+-| **C1** | A4 | B2a | Normalize antagonism slack (`slack/target_ratio`) before weighting so all L1 terms are dimensionless. |
+-| **C2** | A8, E3 | none | Branch on `prob.status` → `unbounded/timeout/numerical/infeasible`, all → `DO_NOT_FEED` but diagnosable; surface a `Not Solved` incumbent. |
+-| **C3** | B4 | moisture/ash data in DB (external) | Store measured moisture/ash per ingredient; compute DM from data instead of hardcoded 72%/1%. |
++| **gsd:A3** | A4 | B2a | Normalize antagonism slack (`slack/target_ratio`) before weighting so all L1 terms are dimensionless. |
++| **gsd:A2** | A8, gsd:A8 | none | Branch on `prob.status` → `unbounded/timeout/numerical/infeasible`, all → `DO_NOT_FEED` but diagnosable; surface a `Not Solved` incumbent. |
++| **gsd:C2** | B4 | moisture/ash data in DB (external) | Store measured moisture/ash per ingredient; compute DM from data instead of hardcoded 72%/1%. |
+ | **C4** | B6–B10, B17 | **G3 + vet** | Verify & correct each SUL (Cu/Fe/I/Mn/Zn) against cited AAFCO/NRC/FEDIAF source; fix mislabels; every SUL carries a resolving `source_ref`. |
+-| **C5** | C6, C8, C10, C11, C12, C13 | **B7, B8** (B6 recommended, not blocks) | Schema hardening: numeric bounds, unit-key binding, `additionalProperties:false` on 7 object types, `source_ref ∈ registry`, `min≤max`, 3-state enforcement. |
++| **gsd:gsd:A3** | C6, gsd:A5, C10, C11, C12, C13 | **B7, B8** (B6 recommended, not blocks) | Schema hardening: numeric bounds, unit-key binding, `additionalProperties:false` on 7 object types, `source_ref ∈ registry`, `min≤max`, 3-state enforcement. |
+ | **C6** | D2 | none (security; do early) | FDC API key in header (not URL param); scrub `str(exc)`; **rotate the key** (presume leaked). |
+-| **C7** | D3 | **B5** | Treat empty FDC nutrient list as `MISSING`/error, not zero. |
+-| **C8** | D4 | **B5** | Append-only, hash-chained audit log; ms timestamps; no rewrite of prior entries. |
+-| **C9** | D5 | **B5** | Make the countermeasure gate non-trivially defeatable (tie to git identity/signed marker). *(Note: Part 3 §5.4 classifies C9 as a schema-fix task paired with C5 — different from Part 2's validation-fix classification. Retained per Part 2 here.)* |
++| **gsd:D1** | D3 | **B5** | Treat empty FDC nutrient list as `MISSING`/error, not zero. |
++| **gsd:A5** | D4 | **B5** | Append-only, hash-chained audit log; ms timestamps; no rewrite of prior entries. |
++| **gsd:C4** | D5 | **B5** | Make the countermeasure gate non-trivially defeatable (tie to git identity/signed marker). *(Note: Part 3 §5.4 classifies gsd:C4 as a schema-fix task paired with gsd:gsd:A3 — different from Part 2's validation-fix classification. Retained per Part 2 here.)* |
+ | **C10** | D6 | **B5** | Verify CoFID sha256 on every load, not just first download. |
+ | **C11** | D7, D12 | **B5** | Wrap each fetcher call in try/except; parse `Retry-After` defensively (fallback; HTTP-date). |
+ | **C12** | D8 | **B5** | Commit before/atomically-with the swap, or treat failed commit as hard error → rollback; actually `raise GitError`. |
+@@ -393,15 +393,15 @@
+ 
+ | Task | Repairs | Blocked by | Green condition |
+ |---|---|---|---|
+-| **R1** | E16 | after fixes they lock | Assert the **specific** expected status for a deterministic (seeded) selection; a perturbed expectation fails. |
++| **gsd:A2** | E16 | after fixes they lock | Assert the **specific** expected status for a deterministic (seeded) selection; a perturbed expectation fails. |
+ | **R2** | E17 | after fixes | `assert passed` (or delete helper); logs go to `tmp_path`; a forced failure now fails the test; working tree stays clean. |
+ | **R3** | E18, E5 | after fixes | Capture per-stage objective bounds and assert non-degradation within tolerance; force a real timeout (tiny `time_limit`/monkeypatched CBC `maxSeconds`) and assert a safe result object. |
+ | **R4** | proof discipline | after fixes | For a fixed fixture+seed the output contract is byte-identical across two runs; each P0/P1 fix has a minimal 2–3-ingredient regression fixture. |
+-| **R5** | A19, D22, A12 | **R1–R4 (LAST)** | Deletions land with `pytest`+`mypy` green and no remaining references. Includes `GitError`-never-raised, `verify_backup`-never-called, unused `FDC_RATE_LIMIT_DELAY_S`, unreferenced `weighted_normalized_deviation`, `[DEBUG]` prints (E23/R-06). |
++| **R5** | A19, D22, A12 | **gsd:A2–R4 (LAST)** | Deletions land with `pytest`+`mypy` green and no remaining references. Includes `GitError`-never-raised, `verify_backup`-never-called, unused `FDC_RATE_LIMIT_DELAY_S`, unreferenced `weighted_normalized_deviation`, `[DEBUG]` prints (E23/R-06). |
+ 
+ ### C.5 P2/P3 Debt Items (12 items not assigned formal task IDs — was 11, +1 = E25 per AUDIT_DELTA; Part 2 §9 enumerates 15 total — 4 folded into R1/R2/R3/R5)
+ 
+-Part 2 §15 headline count is "15 P2/P3 debt items." This section lists the 12 that are NOT assigned formal B/C/R task IDs — 11 from Part 2 §9 + **E25** added by AUDIT_DELTA. The other 4 (E16→R1, E17→R2, E18→R3, D22/A19→R5) are folded into the regression suite. Several of the 12 also overlap with R5 (noted).
++Part 2 §15 headline count is "15 P2/P3 debt items." This section lists the 12 that are NOT assigned formal B/C/R task IDs — 11 from Part 2 §9 + **E25** added by AUDIT_DELTA. The other 4 (E16→gsd:A2, E17→R2, E18→R3, D22/A19→R5) are folded into the regression suite. Several of the 12 also overlap with R5 (noted).
+ 
+ | # | Repairs finding(s) | Item | Priority | Note |
+ |---|---|---|---|---|
+@@ -448,20 +448,20 @@
+                             └─────┘    └─────┘    └─────────┘
+ 
+   B0 (safety freeze) ── independent; backstops EVERYTHING; first commit
+-     └─ trip-conditions re-detect A3, A2, B2, C1, D1 until each real fix lands
++     └─ trip-conditions re-detect A3, A2, B2, gsd:A3, D1 until each real fix lands
+ 
+   B7 (canonical namespace) ──┬─> B1  (nutrient_results: clean min/max) [recommended]
+    the keystone ─────────────┼─> B5  (import: canonical units) [recommended, URGENT]
+                               ├─> B6  (DB conformance) [recommended] ─> C14 (CI gates) [+B5]
+                               ├─> B8  (lp_parameters schema) [blocks]
+                               │         │
+-                              │         └─> C5 (schema hardening) [+B7, +B6-rec]
++                              │         └─> gsd:gsd:A3 (schema hardening) [+B7, +B6-rec]
+                               ├─> B12 (arginine — reframed) [blocks] <+ B1>
+-                              └─> C5  (schema hardening) [blocks]
++                              └─> gsd:gsd:A3  (schema hardening) [blocks]
+ 
+   B2a (harden antagonisms L1) ── G1 resolved; independent
+        │
+-       ├─> C1 (penalty normalization) [blocks]
++       ├─> gsd:A3 (penalty normalization) [blocks]
+        │
+        └─> B2b (severity-scaled rec) [blocks] <+ G3 thresholds + vet>
+                                                ║
+@@ -473,34 +473,34 @@
+        │   [precedes D1 in failure chain: orchestrator.py:37 [pydantic] fires before :54 [D1]]
+        │   [no separate task ID — scope-expanded into B5 + C14]
+        ▼
+-  B5 (restore _shared.py) ──┬─> C7  (D3 empty-200)        [CI RED TODAY —
+-   [URGENT — single most     ├─> C8  (D4 audit trail)      blocks verification
+-    important next action]   ├─> C9  (D5 circuit-breaker)   of B6, B1, B2a
++  B5 (restore _shared.py) ──┬─> gsd:D1  (D3 empty-200)        [CI RED TODAY —
++   [URGENT — single most     ├─> gsd:A5  (D4 audit trail)      blocks verification
++    important next action]   ├─> gsd:C4  (D5 circuit-breaker)   of B6, B1, B2a
+    [+ E24-fix co-required    ├─> C10 (D6 CoFID checksum)   implicitly]
+     for B5 DoD per           ├─> C11 (D7/D12 fetch isolation)
+     AUDIT_DELTA]             ├─> C12 (D8 atomic commit)
+                               └─> C14 (CI gates) [+B6, +E24-scope-expansion]
+ 
+-  B6 (schema gate) ─> C5 (schema hardening) [recommended, not blocks; +B7, +B8]
++  B6 (schema gate) ─> gsd:gsd:A3 (schema hardening) [recommended, not blocks; +B7, +B8]
+   B6 ─> C14 (CI gates) [+B5]
+ 
+-  B11 (diagnose L1) ── informs B3, B4 (should run before they ship)
+-
+-  Independent (can start now): B0, B2a, B9(=G2), B10, B11, C2, C6, C13, C15, C16, **E25-fix** *(AUDIT_DELTA / NEW-3 — independent P2 packaging fix; debt item #12 in §C.5)*
+-
+-  R1–R5 (regression suite) ── after the fixes they lock; R5 is LAST (blocked by R1–R4)
++  gsd:B1 (diagnose L1) ── informs B3, B4 (should run before they ship)
++
++  Independent (can start now): B0, B2a, B9(=G2), B10, gsd:B1, gsd:A2, C6, C13, C15, C16, **E25-fix** *(AUDIT_DELTA / NEW-3 — independent P2 packaging fix; debt item #12 in §C.5)*
++
++  gsd:A2–R5 (regression suite) ── after the fixes they lock; R5 is LAST (blocked by gsd:A2–R4)
+ ```
+ 
+ **Edge summary (45 total — was 44, +1 co-requisite per AUDIT_DELTA):**
+-- **23 task→task blocking edges** (B7→{B8,B12,C5} hard-blocks + B7→{B1,B5,B6} recommended, B2a→{B2b,C1}, B5→{C7,C8,C9,C10,C11,C12,C14}, B6→C14, B8→C5, B1→B12, R1→R5, R2→R5, R3→R5, R4→R5, + B6→C5 recommended)
+-- **4 gate→task edges** (G3→B3, G3→B4, G3→B2b-thresholds, G3→**Task C4**) — *Note: G3 blocks TASK C4 (SUL verification); G3 does NOT block the fix for FINDING C4 (orphaned schema, repaired by C5/C9 per Part 3 §5.4). See §A.0 C4 namespace collision.*
+-- **3 external prerequisite edges** (chicken_blood_raw Mg→B7, moisture/ash data→C3, "after fixes"→R1–R4)
+-- **1 informational edge** (B11 informs B3/B4)
++- **23 task→task blocking edges** (B7→{B8,B12,gsd:gsd:A3} hard-blocks + B7→{B1,B5,B6} recommended, B2a→{B2b,gsd:A3}, B5→{gsd:D1,gsd:A5,gsd:C4,C10,C11,C12,C14}, B6→C14, B8→gsd:gsd:A3, B1→B12, gsd:A2→R5, R2→R5, R3→R5, R4→R5, + B6→gsd:gsd:A3 recommended)
++- **4 gate→task edges** (G3→B3, G3→B4, G3→B2b-thresholds, G3→**Task C4**) — *Note: G3 blocks TASK C4 (SUL verification); G3 does NOT block the fix for FINDING C4 (orphaned schema, repaired by C5/gsd:C4 per Part 3 §5.4). See §A.0 C4 namespace collision.*
++- **3 external prerequisite edges** (chicken_blood_raw Mg→B7, moisture/ash data→gsd:C2, "after fixes"→gsd:A2–R4)
++- **1 informational edge** (gsd:B1 informs B3/B4)
+ - **9 doc-update gating edges** (§C.6)
+ - **4 B0 backstop edges** (B0→{B1,B3,B5,B6} per Part 2 §5 trip conditions; B0 also detects A2 but B2a is independent so B0→B2a is an additional backstop)
+ - **1 co-requisite edge (AUDIT_DELTA / NEW-1):** E24-fix (add real `pydantic` to deps) is co-required for B5's DoD — `orchestrator.py:37` [pydantic] fires before `orchestrator.py:54` [D1] in a clean env, so B5's `import gsd.validation.pipeline.orchestrator → OK` still fails post-B5 until E24 ships. E24-fix has no separate task ID; it is scope-expanded into B5 + C14. E24 also "precedes D1 in failure chain" (annotated in the graph above, not a separate fix-edge — D1's existing edges already capture that dependency). E25 is independent and adds no edges.
+ 
+-**The critical path** (Part 2 §10, confirmed Part 3 §10): `G1/G2/G3 decisions → B7 → {B1, B5, B6, B8} → {B2a, C1}, {C5}, {C7–C12}, {C14} → Phase 3`. B3/B4 run in parallel once G3 + vet land. **AUDIT_DELTA note (NEW-1):** B5 on the critical path now co-requires **E24-fix** (add real `pydantic` to deps) — B5's DoD does not pass until E24 ships. E24-fix is scope-expanded into B5+C14 (no new task ID); see edge summary above. E25 is NOT on the critical path (independent P2 debt item #12).
++**The critical path** (Part 2 §10, confirmed Part 3 §10): `G1/G2/G3 decisions → B7 → {B1, B5, B6, B8} → {B2a, gsd:A3}, {gsd:gsd:A3}, {gsd:D1–C12}, {C14} → Phase 3`. B3/B4 run in parallel once G3 + vet land. **AUDIT_DELTA note (NEW-1):** B5 on the critical path now co-requires **E24-fix** (add real `pydantic` to deps) — B5's DoD does not pass until E24 ships. E24-fix is scope-expanded into B5+C14 (no new task ID); see edge summary above. E25 is NOT on the critical path (independent P2 debt item #12).
+ 
+ **The safety chain** (Part 3 §5.2 — *not* the critical path): `B1 + B2b`. Both must ship; neither alone is sufficient. "Without B2b, B1 just shows the user the bad numbers under a SAFE_TO_FEED label; with B2b, the label itself reflects the severity."
+ 
+@@ -537,13 +537,13 @@
+     label: "G3 + pending-gate children (B3, B4, B2b, C4)"
+     order: 0
+   - id: antagonism
+-    label: "B2a + C1 + C3 (antagonism / penalty lane)"
++    label: "B2a + gsd:A3 + gsd:C2 (antagonism / penalty lane)"
+     order: 1
+   - id: namespace
+     label: "B7 hub + direct children (B1, B5, B6)"
+     order: 2
+   - id: schema
+-    label: "B8, B12, C5 (schema hardening)"
++    label: "B8, B12, gsd:gsd:A3 (schema hardening)"
+     order: 3
+   - id: validation
+     label: "C7-C12, C14 (validation cluster + CI)"
+@@ -552,7 +552,7 @@
+     label: "R1-R5 regression suite"
+     order: 5
+   - id: independent
+-    label: "Independent sidebar (B0, B9-B11, C2, C6, C13, C15, C16)"
++    label: "Independent sidebar (B0, B9-gsd:B1, gsd:A2, C6, C13, C15, C16)"
+     order: 6
+ 
+ nodes:
+@@ -595,11 +595,11 @@
+     severity: P0
+     status: null
+     label: "B4 · growth energy"
+-    description: "Growth energy + labels. Blocked by G3 + vet. Repairs B1, B5, B11 (flat k=1.2×RER; scenario labels inverted)."
++    description: "Growth energy + labels. Blocked by G3 + vet. Repairs B1, B5, gsd:B1 (flat k=1.2×RER; scenario labels inverted)."
+     lane: gate
+     x: 140
+     y: 460
+-    repairs: ["B1", "B5", "B11"]
++    repairs: ["B1", "B5", "gsd:B1"]
+     blockedBy: ["G3"]
+     onCriticalPath: false
+     subsystem: "Nutrition"
+@@ -637,29 +637,29 @@
+     subsystem: "Nutrition"
+     oneLiner: "SUL verification for Cu/Fe/I/Mn/Zn — blocked by G3 + vet"
+ 
+-  # ===== Lane 1 (antagonism): B2a + C1 + C3 =====
++  # ===== Lane 1 (antagonism): B2a + gsd:A3 + gsd:C2 =====
+   - id: B2a
+     namespace: task
+     kind: task
+     severity: P0
+     status: independent
+     label: "B2a · harden antagonisms L1"
+-    description: "Harden antagonisms at Level 1 (violation ⇒ infeasible ⇒ DO_NOT_FEED). G1 resolved; independent. Repairs A2, A14. Parent of B2b and C1."
++    description: "Harden antagonisms at Level 1 (violation ⇒ infeasible ⇒ DO_NOT_FEED). G1 resolved; independent. Repairs A2, gsd:A2. Parent of B2b and gsd:A3."
+     lane: antagonism
+     x: 360
+     y: 460
+-    repairs: ["A2", "A14"]
++    repairs: ["A2", "gsd:A2"]
+     blockedBy: []
+     onCriticalPath: true
+     subsystem: "LP solver"
+     oneLiner: "Harden antagonisms at Level 1 (violation ⇒ infeasible ⇒ DO_NOT_FEED). G1 resolved; INDEPENDENT."
+ 
+-  - id: C1
+-    namespace: task
+-    kind: task
+-    severity: P1
+-    status: null
+-    label: "C1 · penalty normalization"
++  - id: gsd:A3
++    namespace: task
++    kind: task
++    severity: P1
++    status: null
++    label: "gsd:A3 · penalty normalization"
+     description: "Antagonism penalty normalization (~500× unit mismatch). Blocked by B2a. Repairs A4."
+     lane: antagonism
+     x: 360
+@@ -670,12 +670,12 @@
+     subsystem: "LP solver"
+     oneLiner: "Antagonism penalty normalization (~500× unit mismatch)"
+ 
+-  - id: C3
+-    namespace: task
+-    kind: task
+-    severity: P1
+-    status: null
+-    label: "C3 · dry matter from data"
++  - id: gsd:C2
++    namespace: task
++    kind: task
++    severity: P1
++    status: null
++    label: "gsd:C2 · dry matter from data"
+     description: "Dry matter from data (currently hardcoded 72% moisture / 1% ash). Blocked by external moisture/ash data in DB. Repairs B4. Part of the B7 namespace work but tracked separately because of the external data dependency."
+     lane: antagonism
+     x: 360
+@@ -693,15 +693,15 @@
+     severity: P0
+     status: null
+     label: "B7 · canonical namespace"
+-    description: "Canonical nutrient namespace. Single most-connected node — feeds B1, B5, B6, B8, B12, C5. Repairs C2, C3, C5, C7, B18, C6."
++    description: "Canonical nutrient namespace. Single most-connected node — feeds B1, B5, B6, B8, B12, gsd:gsd:A3. Repairs gsd:A2, gsd:C2, gsd:gsd:A3, gsd:D1, B18, C6."
+     lane: namespace
+     x: 580
+     y: 460
+-    repairs: ["C2", "C3", "C5", "C7"]
++    repairs: ["gsd:A2", "gsd:C2", "gsd:gsd:A3", "gsd:D1"]
+     blockedBy: []
+     onCriticalPath: true
+     subsystem: "Data/Schema"
+-    oneLiner: "Canonical nutrient namespace — single most-connected node, feeds B1/B5/B6/B8/B12/C5"
++    oneLiner: "Canonical nutrient namespace — single most-connected node, feeds B1/B5/B6/B8/B12/gsd:gsd:A3"
+ 
+   - id: B1
+     namespace: task
+@@ -709,11 +709,11 @@
+     severity: P0
+     status: null
+     label: "B1 · nutrient_results"
+-    description: "Real nutrient_results (clean min/max). Blocked by B7 (clean min/max source). Repairs A3, E1, E2."
++    description: "Real nutrient_results (clean min/max). Blocked by B7 (clean min/max source). Repairs A3, gsd:A3, gsd:A3."
+     lane: namespace
+     x: 580
+     y: 640
+-    repairs: ["A3", "E1", "E2"]
++    repairs: ["A3", "gsd:A3", "gsd:A3"]
+     blockedBy: []
+     onCriticalPath: true
+     subsystem: "Nutrition"
+@@ -741,24 +741,24 @@
+     severity: P0
+     status: null
+     label: "B6 · DB schema gate"
+-    description: "DB conformance / schema gate. Prevents data drift recurring. Blocked by B7. Repairs C1, C9, C13. Feeds C5 (recommended) and C14 (blocks)."
++    description: "DB conformance / schema gate. Prevents data drift recurring. Blocked by B7. Repairs gsd:A3, gsd:C4, C13. Feeds gsd:gsd:A3 (recommended) and C14 (blocks)."
+     lane: namespace
+     x: 580
+     y: 820
+-    repairs: ["C1", "C9", "C13"]
++    repairs: ["gsd:A3", "gsd:C4", "C13"]
+     blockedBy: []
+     onCriticalPath: true
+     subsystem: "Data/Schema"
+     oneLiner: "DB conformance / schema gate — prevents data drift recurring"
+ 
+-  # ===== Lane 3 (schema): B8, B12, C5 =====
++  # ===== Lane 3 (schema): B8, B12, gsd:gsd:A3 =====
+   - id: B8
+     namespace: task
+     kind: task
+     severity: P0
+     status: null
+     label: "B8 · lp_parameters schema"
+-    description: "lp_parameters schema — registry shape. Blocked by B7. Repairs C4, C11. Feeds B12 and C5."
++    description: "lp_parameters schema — registry shape. Blocked by B7. Repairs C4, C11. Feeds B12 and gsd:gsd:A3."
+     lane: schema
+     x: 800
+     y: 820
+@@ -784,29 +784,29 @@
+     subsystem: "Nutrition"
+     oneLiner: "Arginine — REFRAMED in Part 3 §8, only reporting layer (A3) is broken"
+ 
+-  - id: C5
+-    namespace: task
+-    kind: task
+-    severity: P1
+-    status: null
+-    label: "C5 · schema hardening"
+-    description: "Schema hardening. Blocked by B7 + B8. Repairs C6, C8, C10–C13. B6 feeds C5 (recommended, not blocks)."
++  - id: gsd:gsd:A3
++    namespace: task
++    kind: task
++    severity: P1
++    status: null
++    label: "gsd:gsd:A3 · schema hardening"
++    description: "Schema hardening. Blocked by B7 + B8. Repairs C6, gsd:A5, C10–C13. B6 feeds gsd:gsd:A3 (recommended, not blocks)."
+     lane: schema
+     x: 800
+     y: 460
+-    repairs: ["C6", "C8", "C10", "C11", "C12", "C13"]
++    repairs: ["C6", "gsd:A5", "C10", "C11", "C12", "C13"]
+     blockedBy: ["B7", "B8"]
+     onCriticalPath: true
+     subsystem: "Schema"
+     oneLiner: "Schema hardening — blocked by B7 + B8, repairs C6/C8/C10-C13"
+ 
+   # ===== Lane 4 (validation): C7-C12, C14 =====
+-  - id: C7
+-    namespace: task
+-    kind: task
+-    severity: P1
+-    status: null
+-    label: "C7 · D3 empty-200"
++  - id: gsd:D1
++    namespace: task
++    kind: task
++    severity: P1
++    status: null
++    label: "gsd:D1 · D3 empty-200"
+     description: "D3 empty-200 accepted as zero-nutrient. Blocked by B5. Validation pipeline fix."
+     lane: validation
+     x: 1020
+@@ -817,12 +817,12 @@
+     subsystem: "Validation"
+     oneLiner: "D3 empty-200 accepted as zero-nutrient"
+ 
+-  - id: C8
+-    namespace: task
+-    kind: task
+-    severity: P1
+-    status: null
+-    label: "C8 · D4 audit trail"
++  - id: gsd:A5
++    namespace: task
++    kind: task
++    severity: P1
++    status: null
++    label: "gsd:A5 · D4 audit trail"
+     description: "D4 audit trail not tamper-evident. Blocked by B5. Validation pipeline fix."
+     lane: validation
+     x: 1020
+@@ -833,12 +833,12 @@
+     subsystem: "Validation"
+     oneLiner: "D4 audit trail not tamper-evident"
+ 
+-  - id: C9
+-    namespace: task
+-    kind: task
+-    severity: P1
+-    status: null
+-    label: "C9 · D5 circuit-breaker"
++  - id: gsd:C4
++    namespace: task
++    kind: task
++    severity: P1
++    status: null
++    label: "gsd:C4 · D5 circuit-breaker"
+     description: "D5 circuit-breaker defeatable. Blocked by B5. Validation pipeline fix."
+     lane: validation
+     x: 1020
+@@ -914,12 +914,12 @@
+     oneLiner: "CI gates + Python matrix — blocked by B5 + B6"
+ 
+   # ===== Lane 5 (regression): R1-R5 =====
+-  - id: R1
++  - id: gsd:A2
+     namespace: task
+     kind: task
+     severity: P2
+     status: null
+-    label: "R1 · tautological assertions"
++    label: "gsd:A2 · tautological assertions"
+     description: "Tautological assertions. After fixes they lock. Phase 3 regression suite."
+     lane: regression
+     x: 1240
+@@ -984,28 +984,28 @@
+     severity: P2
+     status: null
+     label: "R5 · dead code, DEBUG prints"
+-    description: "Dead code, DEBUG prints (legacy R-06 / E23). LAST in the regression suite — blocked by R1–R4. Repairs A19, D22, A12."
++    description: "Dead code, DEBUG prints (legacy R-06 / E23). LAST in the regression suite — blocked by gsd:A2–R4. Repairs A19, D22, A12."
+     lane: regression
+     x: 1240
+     y: 940
+     repairs: ["A19", "D22", "A12"]
+-    blockedBy: ["R1", "R2", "R3", "R4"]
++    blockedBy: ["gsd:A2", "R2", "R3", "R4"]
+     onCriticalPath: true
+     subsystem: "Regression"
+     oneLiner: "Dead code, DEBUG prints — LAST in regression suite, blocked by R1-R4"
+ 
+-  # ===== Lane 6 (independent): B0, B9-B11, C2, C6, C13, C15, C16 =====
++  # ===== Lane 6 (independent): B0, B9-gsd:B1, gsd:A2, C6, C13, C15, C16 =====
+   - id: B0
+     namespace: task
+     kind: task
+     severity: P0
+     status: independent
+     label: "B0 · safety freeze"
+-    description: "Safety freeze. Backstops EVERYTHING. First commit. Forces DO_NOT_FEED + visible banner when any of 5 trip conditions is true. Independent of the fixes — re-detects each original defect (A3, A2, B2, C1, D1) until the real fix lands."
++    description: "Safety freeze. Backstops EVERYTHING. First commit. Forces DO_NOT_FEED + visible banner when any of 5 trip conditions is true. Independent of the fixes — re-detects each original defect (A3, A2, B2, gsd:A3, D1) until the real fix lands."
+     lane: independent
+     x: 1460
+     y: 100
+-    repairs: ["A3", "A2", "B2", "C1", "D1"]
++    repairs: ["A3", "A2", "B2", "gsd:A3", "D1"]
+     blockedBy: []
+     onCriticalPath: true
+     subsystem: "Safety freeze"
+@@ -1043,13 +1043,13 @@
+     subsystem: "LP solver"
+     oneLiner: "Fix lexicographic stage order — L1/L2 were swapped"
+ 
+-  - id: B11
++  - id: gsd:B1
+     namespace: task
+     kind: task
+     severity: P0
+     status: independent
+-    label: "B11 · diagnose L1"
+-    description: "Diagnose Level-1 infeasibility. Independent, cheap, high-info; informs B4/C3."
++    label: "gsd:B1 · diagnose L1"
++    description: "Diagnose Level-1 infeasibility. Independent, cheap, high-info; informs B4/gsd:C2."
+     lane: independent
+     x: 1460
+     y: 460
+@@ -1057,19 +1057,19 @@
+     blockedBy: []
+     onCriticalPath: false
+     subsystem: "Nutrition"
+-    oneLiner: "Diagnose Level-1 infeasibility — independent, cheap, high-info; informs B4/C3"
+-
+-  - id: C2
++    oneLiner: "Diagnose Level-1 infeasibility — independent, cheap, high-info; informs B4/gsd:C2"
++
++  - id: gsd:A2
+     namespace: task
+     kind: task
+     severity: P1
+     status: independent
+-    label: "C2 · status branching"
+-    description: "Status branching — all non-Optimal statuses collapsed to 'infeasible'. Independent. Repairs A8, E3."
++    label: "gsd:A2 · status branching"
++    description: "Status branching — all non-Optimal statuses collapsed to 'infeasible'. Independent. Repairs A8, gsd:A8."
+     lane: independent
+     x: 1460
+     y: 580
+-    repairs: ["A8", "E3"]
++    repairs: ["A8", "gsd:A8"]
+     blockedBy: []
+     onCriticalPath: false
+     subsystem: "Output"
+@@ -1146,9 +1146,9 @@
+   - { from: G3, to: B2b, kind: pending, label: "G3 thresholds" }
+   - { from: G3, to: C4, kind: pending }
+ 
+-  # ===== B2a chain (independent, but feeds B2b and C1) =====
++  # ===== B2a chain (independent, but feeds B2b and gsd:A3) =====
+   - { from: B2a, to: B2b, kind: blocks }
+-  - { from: B2a, to: C1, kind: blocks }
++  - { from: B2a, to: gsd:A3, kind: blocks }
+ 
+   # ===== B7 chain (canonical namespace — central hub) =====
+   - { from: B7, to: B1, kind: recommended, label: "clean min/max source" }
+@@ -1156,21 +1156,21 @@
+   - { from: B7, to: B6, kind: recommended, label: "schema tightening" }
+   - { from: B7, to: B8, kind: blocks }
+   - { from: B7, to: B12, kind: blocks }
+-  - { from: B7, to: C5, kind: blocks }
++  - { from: B7, to: gsd:gsd:A3, kind: blocks }
+ 
+   # B1 → B12 (reporting layer)
+   - { from: B1, to: B12, kind: blocks }
+ 
+-  # B8 → C5 (schema hardening, alongside B7)
+-  - { from: B8, to: C5, kind: blocks }
+-
+-  # B6 → C5 (recommended, NOT blocks — per §C.3 only B7+B8 hard-block C5)
+-  - { from: B6, to: C5, kind: recommended }
++  # B8 → gsd:gsd:A3 (schema hardening, alongside B7)
++  - { from: B8, to: gsd:gsd:A3, kind: blocks }
++
++  # B6 → gsd:gsd:A3 (recommended, NOT blocks — per §C.3 only B7+B8 hard-block gsd:gsd:A3)
++  - { from: B6, to: gsd:gsd:A3, kind: recommended }
+ 
+   # ===== B5 → C7-C12, C14 (all 6 validation fixes + CI gates) =====
+-  - { from: B5, to: C7, kind: blocks }
+-  - { from: B5, to: C8, kind: blocks }
+-  - { from: B5, to: C9, kind: blocks }
++  - { from: B5, to: gsd:D1, kind: blocks }
++  - { from: B5, to: gsd:A5, kind: blocks }
++  - { from: B5, to: gsd:C4, kind: blocks }
+   - { from: B5, to: C10, kind: blocks }
+   - { from: B5, to: C11, kind: blocks }
+   - { from: B5, to: C12, kind: blocks }
+@@ -1184,17 +1184,17 @@
+   - { from: B0, to: B2a, kind: backstops, label: "detects A2" }
+   - { from: B0, to: B3, kind: backstops, label: "detects B2" }
+   - { from: B0, to: B5, kind: backstops, label: "detects D1" }
+-  - { from: B0, to: B6, kind: backstops, label: "detects C1" }
++  - { from: B0, to: B6, kind: backstops, label: "detects gsd:A3" }
+ 
+   # ===== R1-R4 → R5 (regression suite, R5 is LAST) =====
+-  - { from: R1, to: R5, kind: blocks }
++  - { from: gsd:A2, to: R5, kind: blocks }
+   - { from: R2, to: R5, kind: blocks }
+   - { from: R3, to: R5, kind: blocks }
+   - { from: R4, to: R5, kind: blocks }
+ 
+-  # ===== B11 diagnosis → informs B4 / C3 (recommended, NOT blocks) =====
+-  - { from: B11, to: B4, kind: recommended, label: "informs L1 diagnosis" }
+-  - { from: B11, to: C3, kind: recommended, label: "informs L1 diagnosis" }
++  # ===== gsd:B1 diagnosis → informs B4 / gsd:C2 (recommended, NOT blocks) =====
++  - { from: gsd:B1, to: B4, kind: recommended, label: "informs L1 diagnosis" }
++  - { from: gsd:B1, to: gsd:C2, kind: recommended, label: "informs L1 diagnosis" }
+ ```
+ 
+ ---
+@@ -1212,7 +1212,7 @@
+                                 • violates Ca:P / Zn:Cu ratios (A2)
+                                 • may exceed safe Ca ceiling (B2, implicit)
+                                 • reports every nutrient as "adequate" (A3)
+-                                • NO test catches it (E2)
++                                • NO test catches it (gsd:A3)
+                           = mineral-toxicity / developmental-orthopedic-disease
+                             risk for growing large-breed dogs
+ ```
+@@ -1230,21 +1230,21 @@
+ | Seam | Between | Findings | The failure |
+ |---|---|---|---|
+ | **Config ↔ Solver** | declared config ↔ implemented solver | A2, A5 (+ A1, A4, A6 implicit) | Config declares hard antagonisms; solver implements them soft. Config declares an objective-weights file; solver ignores it. |
+-| **Data ↔ Schema** | data file ↔ schema | C1, C4 | Data declares itself schema-conformant; schema declares data non-conformant (21 errors); no gate connects them. Schema expects fields data doesn't contain. |
++| **Data ↔ Schema** | data file ↔ schema | gsd:A3, C4 | Data declares itself schema-conformant; schema declares data non-conformant (21 errors); no gate connects them. Schema expects fields data doesn't contain. |
+ | **Solution ↔ Output** | solver solution ↔ output layer | A3 | Solver computes a real solution with real nutrient values; output layer reports "adequate" for everything regardless. |
+ 
+ **"The defects are in the seams, not the motor."** (Part 3 §4) — the LP mathematical core is verified correct and stays; the seams are broken and must be repaired.
+ 
+ ### E.3 The "contracts in name only" pattern (Part 3 §3.1 — ONE pattern, not 4 bugs)
+ 
+-Part 3 §3.1 explicitly unifies **A3 + A2 + C4 + C1** as **one structural pattern**, not four separate bugs:
++Part 3 §3.1 explicitly unifies **A3 + A2 + C4 + gsd:A3** as **one structural pattern**, not four separate bugs:
+ 
+ > "not four bugs; it is one missing design principle. The project does not have a mechanism that forces 'what the code says it does' to match 'what the code actually does.'"
+ 
+ The fix is one design principle — **verified contracts** — implemented collectively by:
+-- **B6** (CI schema gate) + **B7** (canonical registry) + **C5/C9** (schema hardening) + **B1** (real output)
+-
+-*(A prior version of this map split these into separate clusters — "Safety triad", "Schema conformance C1/C4/C13", "Output contract A3/E1/E2". That split lost the unification insight. C13 is a related data-contract finding but is not part of the core pattern.)*
++- **B6** (CI schema gate) + **B7** (canonical registry) + **C5/gsd:C4** (schema hardening) + **B1** (real output)
++
++*(A prior version of this map split these into separate clusters — "Safety triad", "Schema conformance C1/C4/C13", "Output contract A3/E1/gsd:A3". That split lost the unification insight. C13 is a related data-contract finding but is not part of the core pattern.)*
+ 
+ ### E.4 The containment layer — B0 (the safety freeze)
+ 
+@@ -1253,7 +1253,7 @@
+ 1. Any `nutrient_results[i].status == "adequate"` while `pct_of_min is None` → detects **A3**
+ 2. Any antagonism slack > tolerance → detects **A2** (and B2a's prerequisite)
+ 3. No absolute Ca max in config → detects **B2** (for growth scenarios)
+-4. DB fails schema → detects **C1** (and B6's prerequisite)
++4. DB fails schema → detects **gsd:A3** (and B6's prerequisite)
+ 5. Validation package import fails → detects **D1** (and B5's prerequisite). **AUDIT_DELTA / NEW-1 note:** also accidentally detects **E24** (undeclared `pydantic`) — `orchestrator.py:37` (`from ..schemas import (...)` [pydantic]) fires BEFORE `orchestrator.py:54` (D1) in a clean `pip install -e ".[test]"` venv, so B0 trip-5 catches both the D1 import-smoke failure AND the E24 undeclared-pydantic failure with the same import attempt. **B5's DoD does NOT clear until E24 ships too** (E24-fix is scope-expanded into B5 + C14; no new task ID).
+ 
+ **B0 is independent of the fixes** — it re-detects each original defect until the real fix lands. As each P0 task completes, its trip condition clears. B0 is fully deletable once P0-1 through P0-6 land + vet signs off.
+@@ -1277,14 +1277,14 @@
+ 
+ | Cluster | Findings | Why structural |
+ |---|---|---|
+-| Verdict fusion (§E.1) | A2, A3 (+ B2 implicit, E2 test gap) | Cascade-level interaction; can't fix one layer alone |
+-| Contracts in name only (§E.3) | A3, A2, C4, C1 | One missing design principle; fixed collectively by B1+B2a+B6+B7+C5/C9 |
++| Verdict fusion (§E.1) | A2, A3 (+ B2 implicit, gsd:A3 test gap) | Cascade-level interaction; can't fix one layer alone |
++| Contracts in name only (§E.3) | A3, A2, C4, gsd:A3 | One missing design principle; fixed collectively by B1+B2a+B6+B7+C5/gsd:C4 |
+ | Objective-trustworthiness | A5, A7 | Config↔solver contract; fix together (B9 deletes; C16 removes dead code) |
+-| Canonical namespace | B18, C2, C3, C5, C7 | Must exist BEFORE schema can enforce it (B7) |
+-| Schema conformance | C1, C4, C13 | Must be enforced BEFORE test can assert it (B6, B8, C5) |
++| Canonical namespace | B18, gsd:A2, gsd:C2, gsd:gsd:A3, gsd:D1 | Must exist BEFORE schema can enforce it (B7) |
++| Schema conformance | gsd:A3, C4, C13 | Must be enforced BEFORE test can assert it (B6, B8, gsd:gsd:A3) |
+ | Validation import boundary | D1 | Must be repaired BEFORE any validation fix can be tested (B5) |
+-| Validation trust boundary | D4, D5, D8 | Must be repaired BEFORE validation outputs can be trusted (C8, C9, C12) |
+-| Output contract + test gap | A3/E1, E2 | Must be fixed together (B1) |
++| Validation trust boundary | D4, D5, D8 | Must be repaired BEFORE validation outputs can be trusted (gsd:A5, gsd:C4, C12) |
++| Output contract + test gap | A3/gsd:A3, gsd:A3 | Must be fixed together (B1) |
+ | CI gate gap | E6 | Must be repaired BEFORE any fix can be gated (C14) |
+ | Bug-numbering | E7 | Must be repaired BEFORE team can reliably triage (C15) |
+ 
+@@ -1303,7 +1303,7 @@
+ ## §F. The Execution Order — 4 phases, with the critical chain highlighted
+ 
+ ### Phase 0 (now): B0 — safety freeze
+-First commit. Backstops everything. Makes system honest today. 5 trip conditions re-detect A3, A2, B2, C1, D1.
++First commit. Backstops everything. Makes system honest today. 5 trip conditions re-detect A3, A2, B2, gsd:A3, D1.
+ 
+ ### Phase 1 (now, G3-independent — 7 tasks can start in parallel)
+ 
+@@ -1311,7 +1311,7 @@
+ 1. **B0** (safety freeze) — first commit
+ 2. **B5** (restore `_shared.py`) — **CI is RED today; unblocks entire pipeline; the single most important next action** (Part 3 §9, §12)
+ 3. **B6** (schema gate) — prevents data drift recurring
+-4. **B11** (Level-1 diagnosis) — cheap, high-info; **should run before B3/B4 ship**
++4. **gsd:B1** (Level-1 diagnosis) — cheap, high-info; **should run before B3/B4 ship**
+ 5. **B2a** (harden antagonisms) — G1 resolved; independent
+ 6. **B9** (= G2, delete objective_weights.json) — G2 resolved; removes dead config
+ 7. **B10** (fix stage order) — independent
+@@ -1324,11 +1324,11 @@
+ 
+ **Safety chain** (Part 3 §5.2 — the tasks that actually protect the dog): **B1 + B2b** (both must ship; neither alone sufficient)
+ 
+-### Phase 2 (after Phase 1): C1–C16 — P1 hardening
+-C-series fixes the 30 High bugs. C7–C12 all blocked by B5; C5 blocked by B7+B8; C4 blocked by G3+vet.
+-
+-### Phase 3 (after Phase 2): R1–R5 — regression suite
+-Locks in the fixes so the test suite catches regressions, not just passes. R5 (dead code + DEBUG prints) is last — blocked by R1–R4.
++### Phase 2 (after Phase 1): gsd:A3–C16 — P1 hardening
++C-series fixes the 30 High bugs. gsd:D1–C12 all blocked by B5; gsd:gsd:A3 blocked by B7+B8; C4 blocked by G3+vet.
++
++### Phase 3 (after Phase 2): gsd:A2–R5 — regression suite
++Locks in the fixes so the test suite catches regressions, not just passes. R5 (dead code + DEBUG prints) is last — blocked by gsd:A2–R4.
+ 
+ ### P2/P3 Debt (after Phase 3): 12 items from §C.5 (+1 = E25 from AUDIT_DELTA)
+ Mojibake fix, CLI argparse, packaging lockfile, doc-gen freeze, bioavailability validation, etc. YAGNI-parked items (solver.py split, type model consolidation) only if a P0 fix becomes hard.
+@@ -1343,7 +1343,7 @@
+ |---|---|---|---|
+ | 1 | **A3** — nutrient_results is a hardcoded fake | `solve_cascade()` with two real selections: `arginine_g` returned `value=0`, `status="adequate"`, `target_min=None`. "Not a code-reading inference — actual solver output." | Confirmed |
+ | 2 | **A2** — Mineral antagonisms are soft, not hard | `grep -c HARD_FAIL_INFEASIBLE data/constraints.json` → **60 total** (5 mineral-antagonism: Ca:P, Zn:Cu, Fe:Zn, Ca:Mg, Lys:Arg; 55 nutrient minimums + toxicological limits). All 5 antagonisms silently soft. | Confirmed |
+-| 3 | **C1** — Ingredient bank fails its own schema | `jsonschema.Draft202012Validator` live against data file → **21 errors** (exactly as reported). | Confirmed |
++| 3 | **gsd:A3** — Ingredient bank fails its own schema | `jsonschema.Draft202012Validator` live against data file → **21 errors** (exactly as reported). | Confirmed |
+ | 4 | **D1** — `_shared.py` missing, validation package unimportable | `import gsd.validation.pipeline.orchestrator` → real `ModuleNotFoundError`. | Confirmed |
+ | 5 | **A5** — `objective_weights.json` is dead | `grep -c objective_weights src/gsd/solver.py` → **0**. | Confirmed |
+ | 6 | **C4** — `lp_parameters.schema.json` orphaned | Validated `lp_parameters_data.json` against schema → **3 errors** (fields `breed`, `domains` mismatch; 44 KB dead artifact). | Confirmed |
+@@ -1419,20 +1419,20 @@
+ | R-01 | Antagonism slack soft | **STILL PRESENT** | = A2 |
+ | R-02 | Level-3 SUL/DER not fixed | **FIXED** | (none — `fix_optimum=True` on L3) |
+ | R-03 | Hash-based tie-break perturbation | **FIXED** | (none — hash removed) |
+-| R-04 | Nutrient placeholder (pct_of_min/pct_of_sul null) | **STILL PRESENT** | = A3 / E1 (Critical P0) |
++| R-04 | Nutrient placeholder (pct_of_min/pct_of_sul null) | **STILL PRESENT** | = A3 / gsd:A3 (Critical P0) |
+ | R-05 | `_MIN` → `adequacy_soft` | **STILL PRESENT** | = A6 mechanism |
+ | R-06 | `[DEBUG]` prints | **STILL PRESENT** | = E23 (cosmetic Low P3) |
+-| R-09 | Nutrient placeholder (alternative ID) | **STILL PRESENT** | = A3 / E1 |
++| R-09 | Nutrient placeholder (alternative ID) | **STILL PRESENT** | = A3 / gsd:A3 |
+ | R-01 "mitigation" | (overstated fix) | **OVERSTATED** | silent `.get` defaults remain |
+ 
+-#### G.7.b Governance docs scheme (R1..R7 — different from R-01..R-09)
++#### G.7.b Governance docs scheme (gsd:A2..R7 — different from R-01..R-09)
+ 
+ | Legacy ID | Description | Status | Current ID |
+ |---|---|---|---|
+-| R1 | Antagonism unbounded slack | **STILL PRESENT** | = A2 |
++| gsd:A2 | Antagonism unbounded slack | **STILL PRESENT** | = A2 |
+ | R2 | Level-3 SUL fix | **FIXED** | (none) |
+ | R3 | Tie-break hash removal | **FIXED** | (none) |
+-| R4 | pct_of_min/pct_of_sul null | **STILL PRESENT** | = A3 / E1 |
++| R4 | pct_of_min/pct_of_sul null | **STILL PRESENT** | = A3 / gsd:A3 |
+ | R5 | `_MIN` forced `adequacy_soft` | **STILL PRESENT** | = A6 mechanism |
+ | R6 | `[DEBUG]` prints | **STILL PRESENT** | = E23 |
+ | R7 | pytest passes (37 tests) | **STILL PRESENT** (positive — 37 tests pass) | (none — verification, not defect) |
+@@ -1444,7 +1444,7 @@
+ | F1–F6 | **ALL FIXED** (per cross-cutting grep) |
+ | D1–D2 (amendment) | **ALL FIXED** (different namespace from validation D1–D22 — see §A.0) |
+ 
+-**The legacy self-review (R-01..R-09 / R1..R7) missed the safety-critical bugs.** The team's own reviews checked whether docs matched code, not whether the LP/nutrition/data are scientifically correct. R1 (=A2), R4 (=A3), R5 (=A6 mechanism) were known but unfixed; R2, R3 were fixed; R6 (DEBUG prints = E23) is cosmetic and still present.
++**The legacy self-review (R-01..R-09 / gsd:A2..R7) missed the safety-critical bugs.** The team's own reviews checked whether docs matched code, not whether the LP/nutrition/data are scientifically correct. gsd:A2 (=A2), R4 (=A3), R5 (=A6 mechanism) were known but unfixed; R2, R3 were fixed; R6 (DEBUG prints = E23) is cosmetic and still present.
+ 
+ ### G.8 Execution environment
+ 
