@@ -1,5 +1,5 @@
 -- reconcile-gsd-ids: FULL F1-F7 schema migration
--- Generated: 2026-07-29T01:50:36.569894+00:00
+-- Generated: 2026-07-29T02:10:35.996682+00:00
 -- Conforms to: ADR-0001-ADR-0006, spec-gsd-id-canonization.md
 -- Agent-loop wiring (G3-G8) and discovery-pass LLM (D9) deferred.
 -- pipelineTier initialised to 0 (DP longest-distance computation deferred).

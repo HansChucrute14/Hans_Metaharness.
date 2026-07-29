@@ -93,14 +93,57 @@ export const BUG_FACTS: Record<string, BugFact> = {
   D8:  { id: "D8",  subsystem: "Validation",   severity: "P1", oneLiner: "Commit swallows failures silently", repairs: [], blockedBy: [], onCriticalPath: true },
 };
 
+let dbFactsCache: Record<string, any> | null = null;
+let cacheTimestamp = 0;
+const CACHE_TTL = 60_000;
+
+async function fetchDbFacts(): Promise<Record<string, any>> {
+  if (dbFactsCache && Date.now() - cacheTimestamp < CACHE_TTL) {
+    return dbFactsCache;
+  }
+  try {
+    const res = await fetch("/api/graph/bug-facts");
+    if (res.ok) {
+      dbFactsCache = await res.json();
+      cacheTimestamp = Date.now();
+      return dbFactsCache!;
+    }
+  } catch {}
+  return {};
+}
+
+function mergeFact(id: string, db: Record<string, any>): BugFact | null {
+  const d = db[id];
+  if (d) {
+    return {
+      id: d.canonicalId ?? id,
+      subsystem: d.subsystem ?? "",
+      severity: d.severity ?? "P2",
+      oneLiner: d.oneLiner ?? "",
+      repairs: d.repairs ?? [],
+      blockedBy: d.blockedBy ?? [],
+      onCriticalPath: d.onCriticalPath ?? false,
+    };
+  }
+  return null;
+}
+
 export function getBugFact(id: string): BugFact | null {
-  // Try direct lookup first
+  // Try DB first (populated async via fetchDbFacts)
+  if (dbFactsCache) {
+    const fromDb = mergeFact(id, dbFactsCache);
+    if (fromDb) return fromDb;
+  }
+  // Fall back to static BUG_FACTS
   const direct = BUG_FACTS[id];
   if (direct) return direct;
-  // For C-series IDs that might be stored as C1_task etc. (task vs finding disambiguation)
   const taskKey = `${id}_task`;
   if (BUG_FACTS[taskKey]) return BUG_FACTS[taskKey];
   return null;
+}
+
+export async function primeBugFactsCache(): Promise<void> {
+  await fetchDbFacts();
 }
 
 // Severity color helpers (client-safe, used by Quick-Reference Cards)
