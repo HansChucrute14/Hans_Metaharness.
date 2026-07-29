@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "paths": [".agents/skills"]
+  },
+  "provider": {
+    "ik-llama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "IK-llama.cpp (local)",
+      "options": {
+        "baseURL": "http://localhost:8080/v1"
+      },
+      "models": {
+        "D:\\ik_llama.cpp\\models\\Kwaipilot_KAT-Coder-V2.5-Dev-APEX-MTP-I-Compact-v2D-lite.gguf": {
+          "name": "KAT-Coder IK",
+          "limit": {
+            "context": 32768,
+            "output": 32768
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+--- APPENDIX-GLOSSARY.md
++++ APPENDIX-GLOSSARY.md (canonicalized)
+@@ -40,7 +40,7 @@
+ |---|---|
+ | **CBC** | COIN-OR Branch and Cut. The open-source MILP solver backend used by PuLP; the system runs CBC with `randomSeed=12345`, `threads=1` for determinism (Part 1 §3). |
+ | **GP** | Goal Programming. An LP variant where multiple objectives are pursued in priority order (preemptive/lexicographic GP); the system uses a three-level cascade with lexicographic stage ordering. Finding A1 (Part 1 §3) is that the stage order is inverted. |
+-| **IIS** | Irreducible Infeasible Subset. The minimal set of constraints that, taken together, are infeasible; used to diagnose why an LP has no feasible solution. Task B11 (Part 2 §9.4) uses IIS analysis to diagnose Level-1 unreachability. |
++| **IIS** | Irreducible Infeasible Subset. The minimal set of constraints that, taken together, are infeasible; used to diagnose why an LP has no feasible solution. Task gsd:B1 (Part 2 §9.4) uses IIS analysis to diagnose Level-1 unreachability. |
+ | **LP** | Linear Programming. The mathematical optimization framework the solver is built on. |
+ | **MILP** | Mixed-Integer Linear Programming. LP with both continuous and integer variables; the system uses MILP for the clinical-floor constraint (binary inclusion flags). |
+ | **PuLP** | The Python LP modeling library (v3.3.2) the system uses to build and solve LP/MILP problems via the CBC backend. |
